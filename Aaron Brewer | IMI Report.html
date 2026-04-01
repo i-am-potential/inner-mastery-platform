@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaron Brewer | IMI Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f4;
+    --bg-tertiary: #eeede9;
+    --text-primary: #1a1a18;
+    --text-secondary: #5f5e5a;
+    --text-tertiary: #8a8880;
+    --border: rgba(0,0,0,0.1);
+    --border-mid: rgba(0,0,0,0.15);
+    --teal: #1D9E75;
+    --teal-light: #E1F5EE;
+    --teal-dark: #085041;
+    --teal-mid: #0F6E56;
+    --amber: #854F0B;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  body { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; background: #f0f0ed; color: var(--text-primary); font-size: 13px; line-height: 1.5; padding: 2rem 1rem; min-height: 100vh; }
+  .page { max-width: 860px; margin: 0 auto; background: var(--bg-primary); border-radius: 16px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06); }
+
+  /* Header */
+  .client-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .client-left { display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--teal-dark); flex-shrink: 0; }
+  .client-name { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+  .client-sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .reassess-block { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+  .reassess-label { font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary); }
+  .reassess-date { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .reassess-link { font-size: 11px; color: var(--teal-mid); text-decoration: none; display: flex; align-items: center; gap: 3px; }
+  .reassess-link:hover { text-decoration: underline; }
+
+  /* Composites */
+  .composites { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; margin-bottom: 1.25rem; }
+  .comp-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 10px 12px; }
+  .comp-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; line-height: 1.3; }
+  .comp-val { font-size: 20px; font-weight: 500; color: var(--text-primary); }
+  .comp-delta { font-size: 11px; margin-top: 2px; }
+  .pos { color: var(--teal-mid); } .muted { color: var(--text-tertiary); }
+
+  /* Main grid */
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
+  .panel { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 14px; }
+  .panel-title { font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; }
+  .legend-row { display: flex; gap: 14px; margin-bottom: 12px; font-size: 11px; color: var(--text-secondary); align-items: center; }
+  .swatch { width: 20px; height: 3px; border-radius: 2px; display: inline-block; vertical-align: middle; margin-right: 4px; }
+
+  /* Domain bars */
+  .domain-row { display: flex; align-items: center; gap: 6px; margin-bottom: 9px; }
+  .d-name { font-size: 12px; color: var(--text-secondary); width: 108px; flex-shrink: 0; line-height: 1.2; }
+  .bar-track { flex: 1; height: 7px; background: var(--bg-secondary); border-radius: 4px; position: relative; }
+  .b1 { height: 7px; border-radius: 4px; position: absolute; top: 0; left: 0; background: var(--teal); opacity: 0.32; }
+  .b2 { height: 7px; border-radius: 4px; position: absolute; top: 0; left: 0; background: var(--teal); }
+  .d-score { font-size: 12px; font-weight: 500; color: var(--text-primary); width: 26px; text-align: right; flex-shrink: 0; }
+  .d-delta { font-size: 10px; padding: 1px 5px; border-radius: 999px; font-weight: 500; flex-shrink: 0; min-width: 34px; text-align: center; }
+  .dp { background: var(--teal-light); color: var(--teal-dark); }
+  .dn { background: #FAECE7; color: #993C1D; }
+  .divider { height: 0.5px; background: var(--border); margin: 12px 0; }
+
+  /* Key insights */
+  .insight-block { display: flex; flex-direction: column; gap: 7px; }
+  .insight-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .insight-label { font-size: 11px; color: var(--text-secondary); }
+  .insight-val { font-size: 12px; font-weight: 500; }
+  .i-growth { color: var(--teal-mid); } .i-focus { color: var(--amber); }
+
+  /* Sections */
+  .section { margin-top: 1.75rem; }
+  .section-header { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); padding-bottom: 8px; border-bottom: 0.5px solid var(--border); margin-bottom: 14px; }
+
+  /* Opportunity cards */
+  .opp-card { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 10px; }
+  .opp-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; }
+  .opp-primary .opp-tag { color: var(--amber); }
+  .opp-secondary .opp-tag { color: #5F5E5A; }
+  .opp-title { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 5px; }
+  .opp-body { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Focus grid */
+  .focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .focus-card { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; }
+  .focus-label { font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; }
+  .focus-domain { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 10px; }
+  .practice-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-top: 0.5px solid var(--border); }
+  .practice-name { font-size: 12px; color: var(--text-primary); }
+  .practice-link { font-size: 11px; color: var(--teal-mid); text-decoration: none; padding: 3px 8px; border: 0.5px solid #9FE1CB; border-radius: 999px; }
+  .practice-link:hover { background: var(--teal-light); }
+
+  /* Plan card */
+  .plan-card { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px; }
+  .plan-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .pm-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .pm-val { font-size: 12px; font-weight: 500; color: var(--text-primary); }
+  .focus-statement { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 14px; font-size: 13px; color: var(--text-primary); line-height: 1.6; }
+
+  /* Tracking table */
+  .tracking-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 0; table-layout: fixed; }
+  .tracking-table th { background: var(--bg-secondary); padding: 8px 10px; text-align: left; font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); border-bottom: 0.5px solid var(--border); }
+  .tracking-table td { padding: 9px 10px; border-bottom: 0.5px solid var(--border); color: var(--text-primary); vertical-align: top; line-height: 1.5; }
+  .tracking-table tr:last-child td { border-bottom: none; }
+  .target-pill { display: inline-block; background: var(--teal-light); color: var(--teal-dark); font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 999px; }
+
+  /* Accordion */
+  .accordion { border: 0.5px solid var(--border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 8px; }
+  .accordion-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; cursor: pointer; background: var(--bg-primary); user-select: none; }
+  .accordion-header:hover { background: var(--bg-secondary); }
+  .accordion-left { display: flex; flex-direction: column; gap: 2px; }
+  .accordion-num { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); }
+  .accordion-title { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .accordion-chevron { font-size: 12px; color: var(--text-secondary); transition: transform 0.2s; flex-shrink: 0; }
+  .accordion-chevron.open { transform: rotate(180deg); }
+  .accordion-body { display: none; padding: 0 14px 14px; border-top: 0.5px solid var(--border); }
+  .accordion-body.open { display: block; }
+  .practice-steps { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-top: 10px; }
+  .practice-steps li { font-size: 12px; color: var(--text-secondary); line-height: 1.5; padding-left: 14px; position: relative; }
+  .practice-steps li::before { content: "—"; position: absolute; left: 0; color: var(--text-secondary); }
+  .practice-prompt { display: inline-block; background: var(--bg-secondary); border-radius: var(--radius-md); padding: 7px 10px; font-size: 12px; font-weight: 500; color: var(--text-primary); margin-top: 10px; font-style: italic; width: 100%; }
+
+  /* Reflection */
+  .reflection-list { counter-reset: item; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .reflection-list li { font-size: 12px; color: var(--text-secondary); line-height: 1.6; padding-left: 18px; position: relative; }
+  .reflection-list li::before { content: counter(item); counter-increment: item; position: absolute; left: 0; font-size: 10px; font-weight: 500; color: var(--teal-mid); top: 2px; }
+
+  /* Shifts table */
+  .shifts-table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
+  .shifts-table th { background: var(--bg-secondary); padding: 8px 10px; text-align: left; font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); border-bottom: 0.5px solid var(--border); }
+  .shifts-table td { padding: 9px 10px; border-bottom: 0.5px solid var(--border); color: var(--text-primary); vertical-align: top; }
+  .shifts-table tr:last-child td { border-bottom: none; }
+  .shift-val { color: var(--teal-mid); font-weight: 500; }
+
+  @media (max-width: 640px) {
+    .composites { grid-template-columns: repeat(2, 1fr); }
+    .main-grid { grid-template-columns: 1fr; }
+    .focus-grid { grid-template-columns: 1fr; }
+    .plan-meta { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="client-header">
+    <div class="client-left">
+      <div class="avatar">AB</div>
+      <div>
+        <div class="client-name">Aaron Brewer</div>
+        <div class="client-sub">IMI comparison · Dec 26, 2025 → Mar 16, 2026</div>
+      </div>
+    </div>
+    <div class="reassess-block">
+      <span class="reassess-label">Reassessment</span>
+      <span class="reassess-date">Apr 30, 2026</span>
+      <a class="reassess-link" href="https://forms.gle/7UVQskSkMbdDfSt78" target="_blank">Take assessment ↗</a>
+    </div>
+  </div>
+
+  <!-- COMPOSITES -->
+  <div class="composites">
+    <div class="comp-card"><div class="comp-label">Flexibility baseline</div><div class="comp-val">3.63</div><div class="comp-delta muted">Dec 26, 2025</div></div>
+    <div class="comp-card"><div class="comp-label">Flexibility current</div><div class="comp-val">4.57</div><div class="comp-delta pos">▲ +0.94</div></div>
+    <div class="comp-card"><div class="comp-label">Rigidity baseline</div><div class="comp-val">3.20</div><div class="comp-delta muted">Dec 26, 2025</div></div>
+    <div class="comp-card"><div class="comp-label">Rigidity current</div><div class="comp-val">2.17</div><div class="comp-delta pos">▼ −1.03</div></div>
+  </div>
+
+  <!-- RADAR + SCORES -->
+  <div class="main-grid">
+    <div class="panel">
+      <div class="panel-title">Inner Mastery Index™ Report</div>
+      <div class="legend-row">
+        <span><span class="swatch" style="background:#1D9E75;opacity:0.35;"></span> Dec 26</span>
+        <span><span class="swatch" style="background:#1D9E75;"></span> Mar 16</span>
+      </div>
+      <div style="position:relative;width:100%;height:260px;"><canvas id="radarFlex"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">The 6 Disciplines of Inner Mastery™</div>
+      <div class="legend-row">
+        <span><span class="swatch" style="background:#1D9E75;opacity:0.35;"></span> Dec 26</span>
+        <span><span class="swatch" style="background:#1D9E75;"></span> Mar 16</span>
+      </div>
+      <div class="domain-row"><span class="d-name">Acceptance</span><div class="bar-track"><div class="b1" style="width:60%"></div><div class="b2" style="width:80%"></div></div><span class="d-score">4.8</span><span class="d-delta dp">+1.2</span></div>
+      <div class="domain-row"><span class="d-name">Values</span><div class="bar-track"><div class="b1" style="width:40%"></div><div class="b2" style="width:80%"></div></div><span class="d-score">4.8</span><span class="d-delta dp">+2.4</span></div>
+      <div class="domain-row"><span class="d-name">Action</span><div class="bar-track"><div class="b1" style="width:57%"></div><div class="b2" style="width:67%"></div></div><span class="d-score">4.0</span><span class="d-delta dp">+0.6</span></div>
+      <div class="domain-row"><span class="d-name">Presence</span><div class="bar-track"><div class="b1" style="width:67%"></div><div class="b2" style="width:63%"></div></div><span class="d-score">3.8</span><span class="d-delta dn">−0.2</span></div>
+      <div class="domain-row"><span class="d-name">Self-as-Context</span><div class="bar-track"><div class="b1" style="width:90%"></div><div class="b2" style="width:87%"></div></div><span class="d-score">5.2</span><span class="d-delta dn">−0.2</span></div>
+      <div class="domain-row"><span class="d-name">Defusion</span><div class="bar-track"><div class="b1" style="width:50%"></div><div class="b2" style="width:80%"></div></div><span class="d-score">4.8</span><span class="d-delta dp">+1.8</span></div>
+      <div class="divider"></div>
+      <div class="panel-title" style="margin-bottom:10px;">Key Insights</div>
+      <div class="insight-block">
+        <div class="insight-row"><span class="insight-label">Primary growth</span><span class="insight-val i-growth">Values +2.4</span></div>
+        <div class="insight-row"><span class="insight-label">Secondary growth</span><span class="insight-val i-growth">Defusion +1.8</span></div>
+        <div style="height:0.5px;background:var(--border);margin:3px 0;"></div>
+        <div class="insight-row"><span class="insight-label">Primary focus</span><span class="insight-val i-focus">Presence 3.8</span></div>
+        <div class="insight-row"><span class="insight-label">Secondary focus</span><span class="insight-val i-focus">Action 4.0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROWTH OPPORTUNITIES -->
+  <div class="section">
+    <div class="section-header">Growth Opportunities</div>
+    <div class="opp-card opp-primary">
+      <div class="opp-tag">Primary opportunity</div>
+      <div class="opp-title">Presence — anchoring awareness under real conditions</div>
+      <div class="opp-body">Presence held nearly flat across both assessments (4.0 → 3.8) while every other domain shifted meaningfully. The automatic-pilot pattern hasn't been trained yet. Building deliberate present-moment contact is the next logical development layer, particularly as it supports values anchoring when conditions become demanding.</div>
+    </div>
+    <div class="opp-card opp-secondary">
+      <div class="opp-tag">Secondary opportunity</div>
+      <div class="opp-title">Action — stabilizing follow-through across conditions</div>
+      <div class="opp-body">Action improved modestly (+0.6) and Inaction dropped to near-floor (1.4). The opportunity now is consistency under pressure — translating the values clarity that emerged this cycle into stable behavioral follow-through when conditions are hectic or demanding.</div>
+    </div>
+  </div>
+
+  <!-- FOCUS AREAS -->
+  <div class="section">
+    <div class="section-header">Focus Areas</div>
+    <div class="focus-grid">
+      <div class="focus-card">
+        <div class="focus-label">Primary focus</div>
+        <div class="focus-domain">Presence</div>
+        <div class="practice-row"><span class="practice-name">Simple Meditation</span><a class="practice-link" href="#">Add link ↗</a></div>
+        <div class="practice-row"><span class="practice-name">Narrow &amp; Broad Attention</span><a class="practice-link" href="#">Add link ↗</a></div>
+        <div class="practice-row"><span class="practice-name">Open Focus</span><a class="practice-link" href="#">Add link ↗</a></div>
+      </div>
+      <div class="focus-card">
+        <div class="focus-label">Secondary focus</div>
+        <div class="focus-domain">Action</div>
+        <div class="practice-row"><span class="practice-name">15-Minute Launch</span><a class="practice-link" href="#">Add link ↗</a></div>
+        <div class="practice-row"><span class="practice-name">Values-Activated Action</span><a class="practice-link" href="#">Add link ↗</a></div>
+        <div class="practice-row"><span class="practice-name">Committed Action Tracking</span><a class="practice-link" href="#">Add link ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION PLAN -->
+  <div class="section">
+    <div class="section-header">2-Week Action Plan</div>
+    <div class="plan-card">
+      <div class="plan-meta">
+        <div><div class="pm-label">Client</div><div class="pm-val">Aaron Brewer</div></div>
+        <div><div class="pm-label">Reassessment</div><div class="pm-val">Apr 30, 2026</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="panel-title" style="margin-bottom:8px;">Primary Focus</div>
+      <div class="focus-statement">Build deliberate present-moment contact so that awareness becomes an active capacity — not just an occasional state — and so that values stay accessible when conditions are demanding.</div>
+      <div class="divider"></div>
+      <div class="panel-title" style="margin-bottom:10px;">Daily Tracking Dashboard</div>
+      <table class="tracking-table">
+        <thead>
+          <tr>
+            <th style="width:20%;">IMI Domain</th>
+            <th style="width:22%;">Daily Metric</th>
+            <th style="width:38%;">What Counts</th>
+            <th style="width:20%;">Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Presence</strong></td><td>Embodied Check-Ins</td><td>30–60 sec pause: feet, breath, 3 sensations — done deliberately, not on auto-pilot</td><td><span class="target-pill">3–5 / day</span></td></tr>
+          <tr><td><strong>Presence</strong></td><td>Mindful Activity</td><td>One daily routine done with full attention — no multitasking, no mental drift</td><td><span class="target-pill">1 / day</span></td></tr>
+          <tr><td><strong>Action</strong></td><td>15-Minute Launches</td><td>Starting a task despite resistance — timer set, stopping at 15 min is allowed</td><td><span class="target-pill">1–2 / day</span></td></tr>
+          <tr><td><strong>Values</strong></td><td>Morning Values Priming</td><td>5-min ritual: read values statement + choose 1 value to embody before noon</td><td><span class="target-pill">10 / 14 days</span></td></tr>
+          <tr><td><strong>Action</strong></td><td>Values-Activated Actions</td><td>Action taken explicitly because it reflects a value — spoken or written before acting</td><td><span class="target-pill">1–2 / day</span></td></tr>
+        </tbody>
+      </table>
+      <div class="divider"></div>
+      <div class="panel-title" style="margin-bottom:10px;">Key Practices</div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <div class="accordion-left"><span class="accordion-num">Practice 01</span><span class="accordion-title">Embodied Check-In</span></div>
+          <span class="accordion-chevron">▾</span>
+        </div>
+        <div class="accordion-body">
+          <ul class="practice-steps">
+            <li>Pause at any transition point — before a call, between tasks, before meals</li>
+            <li>Feel both feet on the floor</li>
+            <li>Take one slow exhale</li>
+            <li>Name 3 physical sensations you notice right now</li>
+          </ul>
+          <div class="practice-prompt">"What am I noticing right now — in my body, not my head?"</div>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <div class="accordion-left"><span class="accordion-num">Practice 02</span><span class="accordion-title">Single-Tasking Window</span></div>
+          <span class="accordion-chevron">▾</span>
+        </div>
+        <div class="accordion-body">
+          <ul class="practice-steps">
+            <li>Choose one routine activity per day (coffee, a walk, eating lunch)</li>
+            <li>Do it without a phone, screen, or background noise</li>
+            <li>When your mind drifts, gently return attention to the physical experience</li>
+            <li>No evaluation of how well you did — just return</li>
+          </ul>
+          <div class="practice-prompt">"What is actually happening right now, not what I'm thinking about?"</div>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <div class="accordion-left"><span class="accordion-num">Practice 03</span><span class="accordion-title">15-Minute Launch Rule</span></div>
+          <span class="accordion-chevron">▾</span>
+        </div>
+        <div class="accordion-body">
+          <ul class="practice-steps">
+            <li>When a task feels heavy or you notice resistance, set a 15-minute timer</li>
+            <li>Commit only to starting — stopping at 15 minutes is fully allowed</li>
+            <li>Before starting, say or write: "I'm doing this because I value ___."</li>
+            <li>Momentum is a bonus, not the goal</li>
+          </ul>
+          <div class="practice-prompt">"Can I start for just 15 minutes?"</div>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <div class="accordion-left"><span class="accordion-num">Practice 04</span><span class="accordion-title">Morning Values Priming</span></div>
+          <span class="accordion-chevron">▾</span>
+        </div>
+        <div class="accordion-body">
+          <ul class="practice-steps">
+            <li>Read your values statement within the first hour of your day</li>
+            <li>Choose one value to embody before noon</li>
+            <li>Name one specific action that will reflect that value today</li>
+          </ul>
+          <div class="practice-prompt">"What kind of man am I becoming today?"</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="panel-title" style="margin-bottom:10px;">Weekly Reflection</div>
+      <ol class="reflection-list">
+        <li>When did I feel most present this week — what was happening, and what made contact easier?</li>
+        <li>When did I slip into auto-pilot — what triggered it, and how long before I noticed?</li>
+        <li>Where did my values stay accessible under pressure, and where did they fall away?</li>
+        <li>Which actions this week felt values-driven versus just reactive or obligatory?</li>
+        <li>What's one condition I want to practice staying present in next week?</li>
+      </ol>
+      <div class="divider"></div>
+      <div class="panel-title" style="margin-bottom:10px;">IMI Shifts — 2-Week Targets</div>
+      <table class="shifts-table">
+        <thead><tr><th style="width:55%;">IMI Domain</th><th style="width:45%;">Potential Change</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Presence</strong></td><td class="shift-val">+0.6 to +1.0</td></tr>
+          <tr><td><strong>Lack of Present-Moment Awareness</strong></td><td class="shift-val">−0.6 to −1.0</td></tr>
+          <tr><td><strong>Action</strong></td><td class="shift-val">+0.4 to +0.6</td></tr>
+          <tr><td><strong>Lack of Values Contact</strong></td><td class="shift-val">−0.4 to −0.8</td></tr>
+          <tr><td><strong>Overall Flexibility</strong></td><td class="shift-val">+0.3 to +0.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.accordion-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+
+new Chart(document.getElementById('radarFlex'), {
+  type: 'radar',
+  data: {
+    labels: ['Acceptance','Values','Action','Presence','Self-as-\nContext','Defusion'],
+    datasets: [
+      { label: 'Dec 26', data: [3.6,2.4,3.4,4.0,5.4,3.0], backgroundColor: 'rgba(29,158,117,0.06)', borderColor: 'rgba(29,158,117,0.35)', pointBackgroundColor: 'rgba(29,158,117,0.35)', pointRadius: 3, borderWidth: 1.5, borderDash: [4,3] },
+      { label: 'Mar 16', data: [4.8,4.8,4.0,3.8,5.2,4.8], backgroundColor: 'rgba(29,158,117,0.12)', borderColor: 'rgba(29,158,117,1)', pointBackgroundColor: 'rgba(29,158,117,1)', pointRadius: 4, borderWidth: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw}` } } },
+    scales: { r: { min: 0, max: 6, ticks: { stepSize: 1, font: { size: 9 }, color: '#888780', backdropColor: 'transparent' }, grid: { color: 'rgba(136,135,128,0.18)' }, angleLines: { color: 'rgba(136,135,128,0.18)' }, pointLabels: { font: { size: 10, weight: '500' }, color: '#5F5E5A' } } }
+  }
+});
+</script>
+</body>
+</html>
