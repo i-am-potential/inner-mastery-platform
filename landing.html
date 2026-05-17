@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="light"/>
+  <title>Inner Mastery Index&#8482; &mdash; I AM POTENTIAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:ital,wght@0,300;0,400;0,500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      color-scheme:light only;
+      --bg:#f7f7f7;--ink:#212121;
+      --ink-50:rgba(33,33,33,.50);--ink-35:rgba(33,33,33,.35);
+      --ink-18:rgba(33,33,33,.18);--ink-10:rgba(33,33,33,.10);
+      --font-display:'Lora',Georgia,serif;
+      --font-mono:'DM Mono','Courier New',monospace;
+      --font-sans:'Inter Tight',system-ui,sans-serif;
+      --progress:0;
+    }
+    @media(prefers-color-scheme:dark){:root{background:#f7f7f7!important;color:#212121!important}}
+    html{scroll-snap-type:y mandatory;scroll-behavior:smooth;overscroll-behavior:none;background:#f7f7f7}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-weight:300;overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased}
+
+    /* CURSOR */
+    .cursor-dot{position:fixed;width:5px;height:5px;background:var(--ink);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%)}
+    .cursor-ring{position:fixed;width:28px;height:28px;border:1px solid var(--ink-50);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+    .cursor-ring.expand{width:42px;height:42px}
+
+    /* NOISE */
+    .noise{position:fixed;inset:0;z-index:997;pointer-events:none;opacity:.032;overflow:hidden}
+    .noise::after{content:'';position:absolute;inset:-50%;width:200%;height:200%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px 256px;animation:noiseAnim 1s steps(1,end) infinite}
+    @keyframes noiseAnim{0%{transform:translate(0,0)}10%{transform:translate(-3%,-5%)}20%{transform:translate(-6%,-2%)}30%{transform:translate(3%,5%)}40%{transform:translate(6%,2%)}50%{transform:translate(-8%,-12%)}60%{transform:translate(-12%,-8%)}70%{transform:translate(8%,12%)}80%{transform:translate(12%,8%)}90%{transform:translate(15%,22%)}100%{transform:translate(-15%,-22%)}}
+
+    /* CIRCLES */
+    .circles-wrap{position:fixed;inset:0;z-index:1;pointer-events:none}
+    .circle{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid var(--ink-18);transform-origin:center;will-change:transform,width,height}
+    .circle.animated{transition:width 1100ms cubic-bezier(.33,0,0,1),height 1100ms cubic-bezier(.33,0,0,1),transform 1100ms cubic-bezier(.33,0,0,1)}
+    .circle-plus{position:absolute;top:50%;stroke:var(--ink-18);fill:none;width:clamp(14px,2.4vw,32px);height:clamp(14px,2.4vw,32px)}
+    .circle-plus--right{right:0;transform:translate(50%,-50%)}
+    .circle-plus--left{left:0;transform:translate(-50%,-50%)}
+
+    /* DESKTOP TIMELINE */
+    .scroll-timeline{position:fixed;top:0;left:0;height:100vh;z-index:10;display:flex;align-items:flex-start;padding-left:28px;gap:14px;pointer-events:none}
+    .tl-line{position:relative;width:1px;height:100vh;background:var(--ink-10);flex-shrink:0}
+    .tl-line::before{content:'';position:absolute;top:0;left:0;width:1px;height:calc(var(--progress)*100%);background:var(--ink);transition:height .5s ease}
+    .tl-list{list-style:none;height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:115px 0 72px;flex-shrink:0}
+    .tl-item .tl-num{display:block;font-family:var(--font-mono);font-size:9px;color:var(--ink-50);margin-bottom:2px;letter-spacing:.05em}
+    .tl-item .tl-label{display:block;font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+
+    /* MOBILE HASH TICKS */
+    .mobile-progress{display:none;position:fixed;left:18px;top:50%;transform:translateY(-50%);flex-direction:column;gap:6px;z-index:10;pointer-events:none;transition:opacity .6s ease}
+    .hash-tick{width:12px;height:1.5px;background:var(--ink-35);transform-origin:left center;transition:transform .45s ease,background-color .45s ease,opacity .45s ease;opacity:.25}
+    .hash-tick.past{opacity:.5;background:var(--ink-50)}
+    .hash-tick.active{transform:scaleX(2.2);background:var(--ink);opacity:1}
+
+    /* LOGO */
+    .nav-logo{position:fixed;top:22px;left:105px;z-index:20;pointer-events:none;transform:translateX(-33.33%)}
+    .nav-logo img{height:78px;width:auto;display:block}
+
+    .nav-info{position:fixed;top:20px;right:24px;z-index:20;font-family:var(--font-mono);font-size:10px;line-height:1.65;color:var(--ink-50);text-align:right;pointer-events:none}
+
+    /* BOTTOM BAR */
+    .bottom-bar-wrap{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:20;pointer-events:none}
+    .bb-single{font-family:var(--font-sans);font-weight:300;font-size:10px;letter-spacing:.12em;color:var(--ink-50);white-space:nowrap;transition:opacity .4s ease}
+    .bb-double{display:flex;flex-direction:column;align-items:flex-start;font-family:var(--font-sans);font-weight:300;font-size:9px;letter-spacing:.1em;color:var(--ink-50);line-height:1.8;opacity:0;position:absolute;bottom:0;left:0;width:max-content;transition:opacity .4s ease .35s;pointer-events:none}
+    .bottom-symbol{position:fixed;bottom:16px;right:22px;z-index:20;pointer-events:none}
+    .bottom-symbol img{height:22px;width:auto;display:block}
+
+    /* SNAP */
+    main{position:relative;z-index:5}
+    .snap-page{height:100vh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;align-items:center;position:relative;overflow:hidden}
+
+    /* HERO */
+    #hero{justify-content:center;flex-direction:column;padding:100px 60px 60px}
+    .hero-inner{
+      text-align:center;max-width:960px;width:100%;
+      transition:opacity .35s ease,transform .35s ease;
+    }
+    .eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-50);margin-bottom:36px}
+    /* Hero title: Inter Tight weight 500 (Heading 1) */
+    .hero-title{font-family:var(--font-sans);font-size:clamp(32px,5vw,58px);font-weight:500;line-height:1.18;letter-spacing:-.018em;color:var(--ink);margin-bottom:28px}
+    .hero-title em{font-style:italic;font-family:var(--font-display);font-weight:600}
+    .hero-title .w{display:inline-block;white-space:pre}
+    /* Hero subtitle: Inter Tight weight 300, mixed weights */
+    .hero-subtitle{font-family:var(--font-sans);font-size:clamp(13px,1.4vw,16px);line-height:1.82;color:var(--ink);max-width:600px;margin:0 auto 32px;font-weight:300}
+    .hero-subtitle .wt-500{font-weight:500}
+    .scroll-hint{display:inline-flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--font-mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-35);animation:scrollBob 2.5s ease-in-out infinite;margin-top:4px}
+    .scroll-hint-line{width:1px;height:28px;background:linear-gradient(to bottom,var(--ink-35),transparent)}
+    @keyframes scrollBob{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(8px);opacity:.45}}
+
+    /* L / R / C layout */
+    .block-inner{width:100%}
+    @media(min-width:769px){
+      .snap-l .block-inner{padding-left:25%;padding-right:38%}
+      .snap-r .block-inner{padding-left:38%;padding-right:25%;text-align:right}
+      .snap-c .block-inner{padding-left:22%;padding-right:22%;text-align:center}
+    }
+    @media(max-width:768px){
+      .snap-l .block-inner,.snap-r .block-inner,.snap-c .block-inner{padding:0 28px;text-align:center}
+    }
+
+    /* COPY LINES */
+    .copy-line{font-family:var(--font-sans);font-size:clamp(16px,1.7vw,21px);line-height:1.82;color:var(--ink);font-weight:300;opacity:0;transition:opacity .22s ease,transform .22s ease}
+    @media(min-width:769px){
+      .snap-l .copy-line{transform:translateX(-56px)}
+      .snap-r .copy-line{transform:translateX(56px)}
+    }
+    .snap-c .copy-line{transform:translateY(28px)}
+
+    /* Inline font helpers */
+    /* Lora italic 600 — accent serif italic */
+    .copy-line em,.cta-body em{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:1.12em;display:inline-block;vertical-align:baseline}
+    /* Inter Tight 500 — medium sans */
+    .copy-line .wt-500{font-family:var(--font-sans);font-weight:500;font-style:normal}
+    /* Inter Tight 600 — semibold sans */
+    .copy-line .wt-600{font-family:var(--font-sans);font-weight:600;font-style:normal}
+    /* Lora italic 400 — lighter lora italic (line 18 quote) */
+    /* Lora SemiBold non-italic — emphasis without slant */
+    .lora-600{font-family:var(--font-display);font-weight:600;font-style:normal}
+    .cta-lead .lora-600{font-size:1em}
+    .lora-600i-em{font-family:var(--font-display);font-weight:600;font-style:italic;font-size:1em}
+    .copy-line .lora-400i{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:1.12em;display:inline}
+
+    /* HEADING-SIZE copy lines (Lines 10, 15-17, 20-21) */
+    .copy-line.h1{font-weight:500;font-size:clamp(24px,3vw,38px);line-height:1.28}
+    .copy-line.h2{font-weight:400;font-size:clamp(20px,2.2vw,28px);line-height:1.38}
+    .copy-line.h3{font-weight:300;font-size:clamp(12px,1.1vw,14px);line-height:1.7}
+
+    /* Footnote size lines (Lines 31–33) */
+    .copy-line.fn{font-size:clamp(10px,.9vw,12px);color:var(--ink-50);line-height:1.75}
+
+    /* STRIKETHROUGH animation */
+    .strike-word{position:relative;display:inline-block}
+    .strike-word::after{content:'';position:absolute;left:0;top:50%;width:0;height:1px;background:var(--ink);transition:width .45s ease .1s}
+    .strike-word.struck::after{width:100%}
+
+    /* IMI LINES — letter-by-letter reveal; lines start invisible */
+    .imi-line{
+      font-family:var(--font-sans);font-size:clamp(16px,1.7vw,21px);
+      line-height:1.82;color:var(--ink);font-weight:300;
+      opacity:0;
+      margin-bottom:0;
+    }
+    .imi-line em{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:1.12em;display:inline-block;vertical-align:baseline}
+    .imi-line .wt-600{font-family:var(--font-sans);font-weight:600}
+    /* imi letter spans */
+    .il{display:inline;opacity:0;transition:opacity .04s ease}
+
+    /* BULLET SLOT — one-line height container; bullets overlap in place */
+    .bullet-slot{position:relative;height:2em;margin-top:0.2em}
+    .bullet-item{
+      position:absolute;left:0;right:0;top:0;
+      font-family:var(--font-sans);font-size:clamp(16px,1.7vw,21px);
+      line-height:1.82;color:var(--ink);font-weight:300;
+      opacity:0;
+      transition:opacity .30s ease,transform .30s ease;
+      transform:translateY(14px);
+      text-align:center;
+    }
+
+    /* CYCLING — letter-by-letter */
+    .cycling-container{display:inline-flex;align-items:baseline;white-space:nowrap}
+    .cycling-static{font-family:var(--font-sans);font-weight:300;flex-shrink:0}
+    #cycleSlot{display:inline-block;text-align:left}
+    /* cycleWord is the em tag — letters (.cl) live inside it */
+    #cycleWord{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:1.12em;display:inline-block;white-space:nowrap}
+    .cl{display:inline-block;opacity:0}
+
+    /* STRIKETHROUGH SECTION bullets */
+    .bullet-wrap{margin-top:0}
+
+    /* CTA */
+    #ctaSection{justify-content:center}
+    .cta-inner{width:100%;padding:0 22%;text-align:center}
+    .cta-body{font-family:var(--font-sans);font-size:clamp(16px,1.7vw,21px);line-height:1.86;color:var(--ink);font-weight:300;margin-bottom:52px;opacity:0;transform:translateY(28px);transition:opacity .50s ease,transform .50s ease}
+    .cta-body em{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:1.12em}
+    .cta-body .wt-600{font-family:var(--font-sans);font-weight:600}
+    .cta-btn{display:inline-block;padding:18px 56px;border:1px solid var(--ink);border-radius:100px;font-family:var(--font-sans);font-size:15px;font-weight:400;letter-spacing:.025em;color:var(--ink);text-decoration:none;background:transparent;cursor:none;opacity:0;transform:translateY(18px);transition:opacity .50s ease .16s,transform .50s ease .16s,background .28s,color .28s}
+    .cta-btn:hover{background:var(--ink);color:var(--bg)}
+    .cta-btn .btn-bold{font-family:var(--font-sans);font-weight:600}
+    .cta-btn em{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:1.12em}
+    .cta-lead{font-family:var(--font-sans);font-size:clamp(16px,1.7vw,21px);line-height:1.82;color:var(--ink);font-weight:300;margin-bottom:40px;opacity:0;transform:translateY(28px);transition:opacity .50s ease,transform .50s ease}
+    .cta-lead strong{font-family:var(--font-sans);font-weight:600}
+    .cta-lead em{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:1.12em}
+    .cta-note{font-family:var(--font-sans);font-weight:300;font-size:11px;letter-spacing:.03em;color:var(--ink-50);margin-top:28px;line-height:1.75;opacity:0;transition:opacity .50s ease .55s}
+
+
+    /* Mobile-only line break */
+    .mobile-br{display:none}
+    @media(max-width:768px){.mobile-br{display:block}.desktop-sp{display:none}}
+    /* MOBILE OVERRIDES */
+    @media(max-width:768px){
+      .scroll-timeline{display:none}
+      .mobile-progress{display:flex}
+      body{cursor:auto}
+      .cursor-dot,.cursor-ring{display:none}
+      #hero{padding:100px 28px 60px}
+      .cta-inner{padding:0 24px}
+      .nav-logo{
+        left:50%;transform:translateX(-50%);top:18px;
+        transition:left .55s cubic-bezier(.33,0,0,1),transform .55s cubic-bezier(.33,0,0,1),top .55s cubic-bezier(.33,0,0,1);
+      }
+      .nav-logo img{height:78px;transition:height .55s cubic-bezier(.33,0,0,1)}
+      .nav-logo.nav-scrolled{left:18px;transform:none;top:10px}
+      .nav-logo.nav-scrolled img{height:56px}
+      .bottom-bar-wrap{transition:left .65s cubic-bezier(.33,0,0,1),transform .65s cubic-bezier(.33,0,0,1),bottom .65s}
+      .bottom-bar-wrap.bar-scrolled{left:20px;transform:none;bottom:14px}
+      .bottom-bar-wrap.bar-scrolled .bb-single{opacity:0}
+      .bottom-bar-wrap.bar-scrolled .bb-double{opacity:1}
+    }
+  </style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="noise" aria-hidden="true"></div>
+
+<div class="circles-wrap" id="circlesWrap" aria-hidden="true">
+  <div class="circle" id="c1">
+    <svg class="circle-plus circle-plus--right" viewBox="0 0 49 49" xmlns="http://www.w3.org/2000/svg" stroke-width="1"><path d="M24.5 0V49M0 24.5H49"/></svg>
+    <svg class="circle-plus circle-plus--left"  viewBox="0 0 49 49" xmlns="http://www.w3.org/2000/svg" stroke-width="1"><path d="M24.5 0V49M0 24.5H49"/></svg>
+  </div>
+  <div class="circle" id="c2">
+    <svg class="circle-plus circle-plus--right" viewBox="0 0 49 49" xmlns="http://www.w3.org/2000/svg" stroke-width="1"><path d="M24.5 0V49M0 24.5H49"/></svg>
+    <svg class="circle-plus circle-plus--left"  viewBox="0 0 49 49" xmlns="http://www.w3.org/2000/svg" stroke-width="1"><path d="M24.5 0V49M0 24.5H49"/></svg>
+  </div>
+</div>
+
+<aside class="scroll-timeline" aria-label="Page sections">
+  <div class="tl-line"></div>
+  <ul class="tl-list">
+    <li class="tl-item"><span class="tl-num">01</span><span class="tl-label">Open</span></li>
+    <li class="tl-item"><span class="tl-num">02</span><span class="tl-label">Aware</span></li>
+    <li class="tl-item"><span class="tl-num">03</span><span class="tl-label">Engaged</span></li>
+  </ul>
+</aside>
+
+<div class="mobile-progress" id="mobileProgress" aria-hidden="true"></div>
+
+<div class="nav-logo" id="navLogo" aria-label="I AM POTENTIAL">
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAACECAYAAADhnvK8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEvWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpBdHRyaWI9J2h0dHA6Ly9ucy5hdHRyaWJ1dGlvbi5jb20vYWRzLzEuMC8nPgogIDxBdHRyaWI6QWRzPgogICA8cmRmOlNlcT4KICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0nUmVzb3VyY2UnPgogICAgIDxBdHRyaWI6Q3JlYXRlZD4yMDI1LTEyLTIzPC9BdHRyaWI6Q3JlYXRlZD4KICAgICA8QXR0cmliOkV4dElkPjFhZjgxNTBkLWU3MGEtNDZlYy05YzY5LTYwNTdiNmViYzgyZjwvQXR0cmliOkV4dElkPgogICAgIDxBdHRyaWI6RmJJZD41MjUyNjU5MTQxNzk1ODA8L0F0dHJpYjpGYklkPgogICAgIDxBdHRyaWI6VG91Y2hUeXBlPjI8L0F0dHJpYjpUb3VjaFR5cGU+CiAgICA8L3JkZjpsaT4KICAgPC9yZGY6U2VxPgogIDwvQXR0cmliOkFkcz4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6ZGM9J2h0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvJz4KICA8ZGM6dGl0bGU+CiAgIDxyZGY6QWx0PgogICAgPHJkZjpsaSB4bWw6bGFuZz0neC1kZWZhdWx0Jz5Hb29nbGUgTG9nbyB8IEJMQUNLIC0gMTwvcmRmOmxpPgogICA8L3JkZjpBbHQ+CiAgPC9kYzp0aXRsZT4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3Jp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" alt="i am potential"/>
+</div>
+<div class="nav-info">2033/.01<br>&#8212; 8,944</div>
+
+<div class="bottom-bar-wrap" id="bottomBarWrap">
+  <div class="bb-single">know yourself &middot; master your potential</div>
+  <div class="bb-double"><span>know yourself</span><span>master your potential</span></div>
+</div>
+
+<div class="bottom-symbol" aria-hidden="true"><img src="data:image/png;base64,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CIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACEQjEKJFUiARSExghf74J2/b/lLpC+5V8A287W/f4ZZMBOwILND1Bk6xDv1zuxR+CZeJgAsCG2Rxi5AvhU9ha8V2UdJ5JsFVmVuHS2He+3kzT5watSUBrqQH+L3ibXt+Zzk49T0vAlyZY2wx2sRcX5eo56Urk9FSzNzr1qIb+7g2GaU6nQ2BbUIx15OF2xuZCEQnQGHVIkt5rKKPRAFFAAQorJRCbvZVqgIiEJNAQLCmwFKfVzEHo1giYLF3vpw0QWXoR+CHfs1m3WrlYPQecnCAoTsFCfo6owVuh+tNktz9mqSXCXQiQV8vIn+64cG85OGBxdUcJOireFyszswwXE9Td2sCEnRN4uNj+PiyrnolIEF7rYzyuomABH0d2+n6bd31RkCCvl6R/fXbye5qYvVELUFfB3W8fjvZXS8TK9mAb+1Igr5O7ojbHlbHp+tp6m5NQIKuSbQfv7XfSnbHQw7JBquOxiVQIPzl/61I+fkw7vAUfY4EKKqUIm72tZ4jcI15XAIrI0FzIi3GHZqiz5VAhYE3V84U55xIMhEYhUBA1BS/8V1PlN0oo1BQEWgQWOK8FtyYR/52ubYaDfA6HY9AidAS83h8FdmAAFfqMbYfD4irldmgoOryT+FVABFjtebkWAuqCHggUCCJe4S9w/MBLhMBVwS4DdnCD/CuVZsTgCuytheAENM+xwymWG8EKFQK/NJOuLC/vKjPIiACIiACIiACIiACIiACImBF4P9XUVMCeKL4kgAAAABJRU5ErkJggg==" alt=""/></div>
+
+<main>
+
+<!-- 0: HERO -->
+<section class="snap-page" id="hero">
+  <div class="hero-inner" id="heroInner">
+    <p class="eyebrow">New-Stage Entrepreneurs</p>
+    <h1 class="hero-title" id="heroTitle">
+      <span class="w">You</span><span class="w"> </span><span class="w">don&rsquo;t</span><span class="w"> </span><span class="w">have</span><span class="w"> </span><span class="w">a</span><span class="w"> </span><span class="w">discipline</span><span class="w"> </span><span class="w">problem.</span><br>
+      <span class="w">You</span><span class="w"> </span><span class="w">have</span><span class="w"> </span><span class="w">a</span><br class="mobile-br"><span class="w desktop-sp"> </span><span class="w"><em>relationship</em></span><span class="w"> </span><span class="w">problem.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Researchers discovered <span class="wt-500">the key</span> to closing the gap between who you know you&rsquo;re <span class="wt-500">capable of being</span> and how you&rsquo;re actually <span class="wt-500">showing up</span>.
+    </p>
+    <div class="scroll-hint" aria-hidden="true"><div class="scroll-hint-line"></div><span>Scroll</span></div>
+  </div>
+</section>
+
+<!-- 1: Lines 5–6 — Self-help teaching — C -->
+<section class="snap-page snap-c">
+  <div class="block-inner">
+    <p class="copy-line">The self-help industry taught you to</p>
+    <p class="copy-line">Change your <em>thoughts</em> &rarr; change your <em>life</em>.</p>
+  </div>
+</section>
+
+<!-- 2: Lines 7–9 — Problem / cycling — C -->
+<section class="snap-page snap-c" id="problemSection">
+  <div class="block-inner">
+    <p class="copy-line">But there&rsquo;s a <span class="wt-600">problem</span>.</p>
+    <p class="copy-line">The <span class="wt-600">same thoughts</span> keep returning.</p>
+    <div class="copy-line cycling-container">
+      <span class="cycling-static">The same&nbsp;</span>
+      <span id="cycleSlot"><em id="cycleWord">inconsistency</em></span>
+    </div>
+  </div>
+</section>
+
+<!-- 3: Lines 10–13 — Why — C -->
+<section class="snap-page snap-c">
+  <div class="block-inner">
+    <p class="copy-line h1">Why?</p>
+    <p class="copy-line">Because thoughts are <span class="wt-600">content</span>.</p>
+    <p class="copy-line">And content naturally reappears</p>
+    <p class="copy-line">under <span class="wt-600">similar conditions</span>.</p>
+  </div>
+</section>
+
+<!-- 4: Line 14 — Strikethrough bullets — C -->
+<section class="snap-page snap-c" id="strikeSection">
+  <div class="block-inner">
+    <p class="copy-line" id="strikeHeader">Which means <span class="wt-600">the solution</span> was never:</p>
+    <div class="bullet-slot" id="bulletSlot">
+      <p class="bullet-item" id="bullet1">&ndash; <span class="strike-word" id="sw1"><span class="wt-600">eliminate</span> fear</span></p>
+      <p class="bullet-item" id="bullet2">&ndash; <span class="strike-word" id="sw2"><span class="wt-600">suppress</span> doubt</span></p>
+      <p class="bullet-item" id="bullet3">&ndash; <span class="strike-word" id="sw3"><span class="wt-600">force</span> discipline</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 5: Lines 15–17 — The solution framing — C -->
+<section class="snap-page snap-c">
+  <div class="block-inner">
+    <p class="copy-line h2"><em>The solution</em> is learning</p>
+    <p class="copy-line h2">how to <em>relate</em> to those</p>
+    <p class="copy-line h2">experiences <em>differently</em>.</p>
+  </div>
+</section>
+
+<!-- 6: Instead of / You learn — C -->
+<section class="snap-page snap-c">
+  <div class="block-inner">
+    <p class="copy-line">Instead of feeling <span class="wt-600">doubt</span> and</p>
+    <p class="copy-line"><span class="wt-600">allowing</span> it to <span class="wt-600">dictate</span> your behavior.</p>
+    <p class="copy-line">You learn: &ldquo;I can <em>feel</em> doubt</p>
+    <p class="copy-line"><em>without obeying</em> it.&rdquo;</p>
+  </div>
+</section>
+
+<!-- 7: The key to living your potential — C -->
+<section class="snap-page snap-c">
+  <div class="block-inner">
+    <p class="copy-line h2">The key to <span class="wt-600">living your potential</span></p>
+    <p class="copy-line h2">is not changing the <em>internal content</em></p>
+    <p class="copy-line h2">of your experiences. The key is</p>
+    <p class="copy-line h2">changing your <em>relationship</em> to it.</p>
+  </div>
+</section>
+
+<!-- 7b: When the relationship changes — C -->
+<section class="snap-page snap-c">
+  <div class="block-inner">
+    <p class="copy-line h2">When the relationship <em>changes</em>,</p>
+    <p class="copy-line h2">the internal content <em>loses its power</em></p>
+    <p class="copy-line h2">over your behavior.</p>
+  </div>
+</section>
+
+<!-- 7c: Consistency stops being a battle — C -->
+<section class="snap-page snap-c">
+  <div class="block-inner">
+    <p class="copy-line h2">Consistency <span class="wt-600">stops</span> being a battle</p>
+    <p class="copy-line h2">and becomes <em>how you are</em>.</p>
+  </div>
+</section>
+
+<!-- 8: Lines 22–29 — IMI description — C (letter-by-letter reveal) -->
+<section class="snap-page snap-c" id="imiSection">
+  <div class="block-inner" id="imiBlock">
+    <p class="imi-line" id="imiLine0">The <span class="wt-600">Inner Mastery</span> <em>Index&trade;</em> is the only</p>
+    <p class="imi-line" id="imiLine1"><span class="wt-600">research-backed</span> assessment that</p>
+    <p class="imi-line" id="imiLine2">shows you what&rsquo;s really driving your</p>
+    <p class="imi-line" id="imiLine3"><span class="wt-600">inconsistency</span>, and where you are</p>
+    <p class="imi-line" id="imiLine4">on the journey from potential to</p>
+    <p class="imi-line" id="imiLine5"><em>Inner Mastery</em>.</p>
+  </div>
+</section>
+
+<!-- 9: CTA — C -->
+<section class="snap-page snap-c" id="ctaSection">
+  <div class="cta-inner">
+    <p class="cta-lead" id="ctaLead">Take the <strong>Inner Mastery</strong> <em>Index&trade;</em> to see<br>what&rsquo;s <em class="lora-600i-em">underneath your inconsistency.</em></p>
+    <a href="assessment.html" class="cta-btn" id="ctaBtn">Take the <span class="btn-bold">Inner Mastery</span> <em>Index&trade;</em></a>
+    <p class="cta-note" id="ctaNote">
+      It&rsquo;s a free 10 minute assessment<br>
+      there&rsquo;s no pitch &ndash; just clarity, and<br>
+      the beginning of the future you deserve.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* === CURSOR === */
+const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
+let cx=window.innerWidth/2,cy=window.innerHeight/2,rx=cx,ry=cy;
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;dot.style.left=cx+'px';dot.style.top=cy+'px';});
+document.querySelectorAll('a,.cta-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('expand'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('expand'));
+});
+(function loop(){rx+=(cx-rx)*.11;ry+=(cy-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+/* === HERO BLUR === */
+const ws=document.querySelectorAll('#heroTitle .w');
+document.addEventListener('mousemove',()=>{
+  ws.forEach(s=>{const r=s.getBoundingClientRect();const d=Math.sqrt((cx-r.left-r.width/2)**2+(cy-r.top-r.height/2)**2);let b=d*.013;if(b>8)b=8;if(b<1.6)b=0;s.style.filter='blur('+b+'px)';s.style.transition='filter .45s ease';});
+});
+
+/* === SCRAMBLE === */
+const AL='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+function scramble(span,delay){
+  const em=span.querySelector('em'),tgt=em||span;const orig=tgt.textContent,origHTML=span.innerHTML;if(!orig.trim())return;
+  const max=10+Math.floor(Math.random()*18);let n=0;
+  setTimeout(()=>{const iv=setInterval(()=>{n++;if(n>=max){span.innerHTML=origHTML;clearInterval(iv);return;}const s=Array.from(orig).map(()=>AL[Math.floor(Math.random()*AL.length)]).join('');if(em){const e=span.querySelector('em');if(e)e.textContent=s;}else span.textContent=s;},45);},delay);
+}
+window.addEventListener('load',()=>setTimeout(()=>ws.forEach((s,i)=>scramble(s,i*30)),200));
+
+/* === CIRCLE STATES — 7 pages === */
+const C1=document.getElementById('c1'),C2=document.getElementById('c2');
+const ST=[
+  {a:{s:'77.78vh',x:'-21.67vh'},b:{s:'77.78vh',x:'21.67vh'}},  // 0 hero
+  {a:{s:'68vh',x:'-28vh'},b:{s:'68vh',x:'28vh'}},               // 1 self-help
+  {a:{s:'77.78vh',x:'0vh'},b:{s:'40vh',x:'0vh'}},               // 2 problem/cycling
+  {a:{s:'78vh',x:'-12vh'},b:{s:'78vh',x:'14vh'}},               // 3 why
+  {a:{s:'68vh',x:'-28vh'},b:{s:'68vh',x:'28vh'}},               // 4 strike
+  {a:{s:'72vh',x:'-24vh'},b:{s:'72vh',x:'24vh'}},               // 5 solution framing
+  {a:{s:'80vh',x:'-10vh'},b:{s:'52vh',x:'28vh'}},               // 6 instead of
+  {a:{s:'76vh',x:'-14vh'},b:{s:'76vh',x:'14vh'}},               // 7 the key
+  {a:{s:'74vh',x:'-18vh'},b:{s:'74vh',x:'18vh'}},               // 8 when relationship changes
+  {a:{s:'70vh',x:'-22vh'},b:{s:'70vh',x:'22vh'}},               // 9 consistency
+  {a:{s:'80vh',x:'0vh'},b:{s:'58vh',x:'0vh'}},                  // 10 IMI desc
+  {a:{s:'77.78vh',x:'-21.67vh'},b:{s:'77.78vh',x:'21.67vh'}},  // 11 CTA
+];
+function applyCircle(st){
+  C1.style.width=st.a.s;C1.style.height=st.a.s;C1.style.transform='translate(calc(-50% + '+st.a.x+'), -50%)';
+  C2.style.width=st.b.s;C2.style.height=st.b.s;C2.style.transform='translate(calc(-50% + '+st.b.x+'), -50%)';
+}
+applyCircle(ST[0]);
+requestAnimationFrame(()=>requestAnimationFrame(()=>{C1.classList.add('animated');C2.classList.add('animated');}));
+
+/* === SNAP SECTIONS === */
+const snapSections=Array.from(document.querySelectorAll('.snap-page'));
+const TOTAL=snapSections.length;
+let currentIdx=0;
+const CYCLING_IDX=snapSections.findIndex(s=>s.id==='problemSection');
+const STRIKE_IDX=snapSections.findIndex(s=>s.id==='strikeSection');
+const IMI_IDX=snapSections.findIndex(s=>s.id==='imiSection');
+const CTA_IDX=snapSections.findIndex(s=>s.id==='ctaSection');
+
+/* === MOBILE HASH TICKS === */
+const mobileProgress=document.getElementById('mobileProgress');
+snapSections.forEach(()=>{const d=document.createElement('div');d.className='hash-tick';mobileProgress.appendChild(d);});
+
+function updateHashTicks(idx){
+  mobileProgress.style.opacity=(idx>=CTA_IDX)?'0':'1';
+  document.querySelectorAll('.hash-tick').forEach((t,i)=>{
+    t.className='hash-tick';
+    if(i<idx)t.classList.add('past');
+    else if(i===idx)t.classList.add('active');
+  });
+}
+
+function updateProgressLine(idx){
+  document.documentElement.style.setProperty('--progress',TOTAL>1?idx/(TOTAL-1):0);
+}
+
+/* === LETTER-BY-LETTER CYCLING ===
+   Words: fears / avoidance / inconsistency
+   Each letter fades in L→R, holds, fades out L→R, then next word.
+   Uses a cancellation token so stopCycle() is instant even mid-animation.
+*/
+const CYCLE_WORDS=['fears','avoidance','inconsistency'];
+let cycleIdx=0;
+let cycleToken=0; // incremented on stop; callbacks check they hold the current token
+
+function buildLetterSpans(word){
+  return Array.from(word).map(ch=>
+    `<span class="cl">${ch}</span>`
+  ).join('');
+}
+
+function animateLettersIn(em, token, onDone){
+  const spans=Array.from(em.querySelectorAll('.cl'));
+  const PER=50; // ms per letter
+  spans.forEach((s,i)=>{
+    setTimeout(()=>{
+      if(cycleToken!==token)return;
+      s.style.opacity='1';
+    }, i*PER);
+  });
+  setTimeout(()=>{
+    if(cycleToken!==token)return;
+    onDone();
+  }, spans.length*PER+60);
+}
+
+function animateLettersOut(em, token, onDone){
+  const spans=Array.from(em.querySelectorAll('.cl'));
+  const PER=42;
+  spans.forEach((s,i)=>{
+    setTimeout(()=>{
+      if(cycleToken!==token)return;
+      s.style.opacity='0';
+    }, i*PER);
+  });
+  setTimeout(()=>{
+    if(cycleToken!==token)return;
+    onDone();
+  }, spans.length*PER+60);
+}
+
+function initCyclingLayout(){
+  const slot=document.getElementById('cycleSlot');
+  const word=document.getElementById('cycleWord');
+  if(!slot||!word)return;
+  // Render widest word fully visible to measure, then lock width
+  word.innerHTML=buildLetterSpans('inconsistency');
+  word.querySelectorAll('.cl').forEach(s=>s.style.opacity='1');
+  requestAnimationFrame(()=>{
+    const w=slot.getBoundingClientRect().width;
+    if(w>0)slot.style.minWidth=Math.ceil(w+2)+'px';
+    // Reset: hide all letters, set first word
+    word.innerHTML=buildLetterSpans(CYCLE_WORDS[0]);
+    // letters start invisible (CSS .cl sets opacity:0)
+  });
+}
+window.addEventListener('load',()=>setTimeout(initCyclingLayout,400));
+
+function runCycleStep(token){
+  if(cycleToken!==token)return;
+  const em=document.getElementById('cycleWord');
+  if(!em)return;
+  em.innerHTML=buildLetterSpans(CYCLE_WORDS[cycleIdx]);
+  animateLettersIn(em, token, ()=>{
+    // Hold 1500ms then fade out
+    setTimeout(()=>{
+      if(cycleToken!==token)return;
+      animateLettersOut(em, token, ()=>{
+        if(cycleToken!==token)return;
+        cycleIdx=(cycleIdx+1)%CYCLE_WORDS.length;
+        setTimeout(()=>runCycleStep(token), 100);
+      });
+    }, 1500);
+  });
+}
+
+function startCycle(){
+  cycleToken++;
+  cycleIdx=0;
+  const em=document.getElementById('cycleWord');
+  if(em){em.innerHTML=buildLetterSpans(CYCLE_WORDS[0]);}
+  runCycleStep(cycleToken);
+}
+function stopCycle(){
+  cycleToken++; // invalidates all pending callbacks immediately
+  const em=document.getElementById('cycleWord');
+  if(em)em.querySelectorAll('.cl').forEach(s=>s.style.opacity='0');
+}
+
+/* === IMI LETTER-BY-LETTER REVEAL (line by line) ===
+   Each line reveals characters L→R. Lines appear one after another.
+   Uses a token so stopImiReveal() is instant even mid-animation.
+*/
+let imiToken=0;
+const IMI_LINE_COUNT=6;
+
+function wrapImiLine(lineEl){
+  // Replace all text node characters with <span class="il"> wrappers
+  function walkNode(node){
+    if(node.nodeType===3){
+      const chars=Array.from(node.textContent);
+      const frag=document.createDocumentFragment();
+      chars.forEach(ch=>{
+        const s=document.createElement('span');
+        s.className='il';
+        s.textContent=ch;
+        frag.appendChild(s);
+      });
+      node.parentNode.replaceChild(frag,node);
+    } else if(node.nodeType===1 && node.tagName!=='SCRIPT'){
+      Array.from(node.childNodes).forEach(walkNode);
+    }
+  }
+  walkNode(lineEl);
+}
+
+function revealImiLine(lineEl, tok, onDone){
+  if(imiToken!==tok)return;
+  lineEl.style.opacity='1';
+  const spans=Array.from(lineEl.querySelectorAll('.il'));
+  const PER=28;
+  spans.forEach((s,i)=>{
+    setTimeout(()=>{
+      if(imiToken!==tok)return;
+      s.style.opacity='1';
+    }, i*PER);
+  });
+  setTimeout(()=>{
+    if(imiToken!==tok)return;
+    onDone();
+  }, spans.length*PER+40);
+}
+
+function startImiReveal(){
+  imiToken++;
+  const tok=imiToken;
+  // Prepare all lines: wrap if needed, hide
+  const lineLengths=[];
+  for(let i=0;i<IMI_LINE_COUNT;i++){
+    const line=document.getElementById('imiLine'+i);
+    if(!line){lineLengths.push(30);continue;}
+    const spans=line.querySelectorAll('.il');
+    if(spans.length>0){
+      spans.forEach(s=>s.style.opacity='0');
+    } else {
+      wrapImiLine(line);
+    }
+    line.style.opacity='0';
+    lineLengths.push(line.querySelectorAll('.il').length);
+  }
+  // Cascade reveals
+  let delay=100;
+  for(let i=0;i<IMI_LINE_COUNT;i++){
+    ((idx,d)=>{
+      setTimeout(()=>{
+        if(imiToken!==tok)return;
+        const line=document.getElementById('imiLine'+idx);
+        if(line)revealImiLine(line,tok,()=>{});
+      }, d);
+    })(i, delay);
+    delay += lineLengths[i]*28 + 100; // time for this line + gap before next
+  }
+}
+
+function stopImiReveal(){
+  imiToken++;
+  for(let i=0;i<IMI_LINE_COUNT;i++){
+    const line=document.getElementById('imiLine'+i);
+    if(line){
+      line.style.opacity='0';
+      line.querySelectorAll('.il').forEach(s=>s.style.opacity='0');
+    }
+  }
+}
+
+/* === SEQUENTIAL BULLET REVEAL + STRIKE ===
+   All three bullets are absolutely positioned in the same slot.
+   Sequence: fade in → strike → fade out → next appears in same spot.
+   Last bullet stays struck. No layout shift.
+*/
+let strikeTimers=[];
+function clearStrikeTimers(){strikeTimers.forEach(t=>clearTimeout(t));strikeTimers=[];}
+
+function startStrike(){
+  clearStrikeTimers();
+  const bulletIds=['bullet1','bullet2','bullet3'];
+  const swIds=['sw1','sw2','sw3'];
+
+  // Ensure all bullets are hidden + reset
+  bulletIds.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.style.opacity='0';el.style.transform='translateY(14px)';}
+  });
+  swIds.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('struck');});
+
+  let delay=800; // wait for header line to settle — user reads it first
+
+  bulletIds.forEach((bid,i)=>{
+    const isLast=(i===bulletIds.length-1);
+
+    // 1. Fade in — appears in same slot position as previous
+    strikeTimers.push(setTimeout(()=>{
+      const b=document.getElementById(bid);
+      if(b){
+        b.style.transition='opacity .30s ease,transform .30s ease';
+        b.style.opacity='1';
+        b.style.transform='translateY(0)';
+      }
+    }, delay));
+    delay+=460; // let fade-in complete
+
+    // 2. Strikethrough draws across
+    strikeTimers.push(setTimeout(()=>{
+      const sw=document.getElementById(swIds[i]);
+      if(sw)sw.classList.add('struck');
+    }, delay));
+    delay+=580; // let strike finish
+
+    if(!isLast){
+      // 3. Fade out (only non-last bullets)
+      strikeTimers.push(setTimeout(()=>{
+        const b=document.getElementById(bid);
+        if(b){b.style.opacity='0';b.style.transform='translateY(-10px)';}
+      }, delay));
+      delay+=320; // gap before next bullet appears
+    }
+    // Last bullet stays visible + struck
+  });
+}
+
+function resetStrike(){
+  clearStrikeTimers();
+  ['bullet1','bullet2','bullet3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.style.transition='none'; // suppress flash
+      el.style.opacity='0';
+      el.style.transform='translateY(14px)';
+      void el.offsetHeight; // force reflow
+    }
+  });
+  ['sw1','sw2','sw3'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('struck');});
+}
+
+/* === FADE HELPERS === */
+const heroInner=document.getElementById('heroInner');
+
+function fadeOutHero(){
+  if(heroInner){heroInner.style.opacity='0';heroInner.style.transform='translateY(-10px)';}
+}
+function fadeInHero(){
+  if(heroInner){heroInner.style.opacity='1';heroInner.style.transform='translateY(0)';}
+}
+
+function setInitTransform(l,sec){
+  if(window.innerWidth>768){
+    if(sec.classList.contains('snap-l'))l.style.transform='translateX(-56px)';
+    else if(sec.classList.contains('snap-r'))l.style.transform='translateX(56px)';
+    else l.style.transform='translateY(28px)';
+  }else{
+    l.style.transform='translateY(28px)';
+  }
+}
+
+function initSection(sec){
+  if(sec.id==='hero')return;
+  if(sec.id==='strikeSection'){
+    // Hide the header copy-line; bullet-items managed by startStrike/resetStrike
+    sec.querySelectorAll('.copy-line').forEach(l=>{l.style.opacity='0';setInitTransform(l,sec);});
+    ['bullet1','bullet2','bullet3'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.style.opacity='0';el.style.transform='translateY(14px)';}
+    });
+    return;
+  }
+  if(sec.id==='imiSection'){
+    // IMI lines start hidden; letter animation handles reveal
+    sec.querySelectorAll('.imi-line').forEach(l=>{l.style.opacity='0';});
+    return;
+  }
+  sec.querySelectorAll('.copy-line').forEach(l=>{l.style.opacity='0';setInitTransform(l,sec);});
+  if(sec.id==='ctaSection'){
+    ['ctaLead','ctaBtn','ctaNote'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='0';el.style.transform='translateY(28px)';}});
+  }
+}
+
+function fadeInSection(sec){
+  if(sec.id==='hero'){fadeInHero();return;}
+  const lines=sec.querySelectorAll('.copy-line');
+  lines.forEach((l,i)=>{if(l._t)clearTimeout(l._t);l._t=setTimeout(()=>{l.style.opacity='1';l.style.transform='translate(0,0)';},i*30);});
+  if(sec.id==='ctaSection'){
+    ['ctaLead','ctaBtn','ctaNote'].forEach((id,i)=>{const el=document.getElementById(id);if(el)setTimeout(()=>{el.style.opacity='1';el.style.transform='translateY(0)';},i*110);});
+  }
+  // Trigger bullet sequence when strike section fades in
+  if(sec.id==='strikeSection'){
+    setTimeout(startStrike, 30+220);
+  }
+  // Trigger IMI letter reveal
+  if(sec.id==='imiSection'){
+    setTimeout(startImiReveal, 120);
+  }
+}
+
+function fadeOutSection(sec){
+  if(sec.id==='hero'){fadeOutHero();return;}
+  // CTA: only fade out if we're genuinely navigating AWAY (back toward earlier sections)
+  // Never fade out if trying to scroll past the last page
+  if(sec.id==='ctaSection') return; // CTA stays locked once shown
+  sec.querySelectorAll('.copy-line').forEach(l=>{if(l._t)clearTimeout(l._t);l.style.opacity='0';l.style.transform='translateY(-12px)';});
+  if(sec.id==='strikeSection'){
+    resetStrike();
+  }
+  if(sec.id==='imiSection'){
+    stopImiReveal();
+  }
+}
+
+/* Init all sections hidden */
+snapSections.forEach(s=>initSection(s));
+
+/* === MOBILE UI === */
+function updateMobileUI(idx){
+  if(window.innerWidth>768)return;
+  const logo=document.getElementById('navLogo');
+  const barWrap=document.getElementById('bottomBarWrap');
+  if(idx>0){logo.classList.add('nav-scrolled');if(barWrap)barWrap.classList.add('bar-scrolled');}
+  else{logo.classList.remove('nav-scrolled');if(barWrap)barWrap.classList.remove('bar-scrolled');}
+}
+
+/* === NAVIGATE === */
+let lastNavTime=0;
+const NAV_COOLDOWN=220;
+
+function goTo(idx){
+  if(idx<0||idx>=TOTAL)return;
+  const now=Date.now();
+  if(now-lastNavTime<NAV_COOLDOWN)return;
+  lastNavTime=now;
+
+  const from=snapSections[currentIdx];
+  const to=snapSections[idx];
+
+  // If navigating away from CTA backward, hide CTA elements
+  if(from.id==='ctaSection' && idx<currentIdx) hideCta();
+
+  fadeOutSection(from);
+  if(currentIdx===CYCLING_IDX)stopCycle();
+
+  currentIdx=idx;
+  to.scrollIntoView({behavior:'smooth',block:'start'});
+
+  setTimeout(()=>{
+    fadeInSection(to);
+    if(idx===CYCLING_IDX)startCycle();
+    applyCircle(ST[Math.min(idx,ST.length-1)]);
+    updateHashTicks(idx);
+    updateProgressLine(idx);
+    updateMobileUI(idx);
+  },180);
+}
+
+/* === DESKTOP WHEEL === */
+window.addEventListener('wheel',e=>{
+  e.preventDefault();
+  goTo(currentIdx+(e.deltaY>0?1:-1));
+},{passive:false});
+
+/* === KEYBOARD === */
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();goTo(currentIdx+1);}
+  else if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();goTo(currentIdx-1);}
+});
+
+/* === MOBILE: IntersectionObserver for instant fade-in ===
+   On mobile, native scroll-snap fires 'scrollend' 300-600ms late.
+   Instead we watch for each section crossing 55% visibility —
+   that fires the moment the snap settles, not after the OS delay.
+   Desktop still uses wheel/keyboard via goTo().
+*/
+let ioActive = window.innerWidth <= 768;
+
+function hideCta(){
+  ['ctaLead','ctaBtn','ctaNote'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.style.opacity='0';el.style.transform='translateY(28px)';}
+  });
+}
+
+function handleSectionVisible(idx){
+  if(idx === currentIdx) return;
+  const now = Date.now();
+  if(now - lastNavTime < 140) return;
+  lastNavTime = now;
+
+  const from = snapSections[currentIdx];
+  const to   = snapSections[idx];
+
+  // If navigating away FROM cta backward, hide cta elements
+  if(from.id === 'ctaSection' && idx < currentIdx) hideCta();
+
+  fadeOutSection(from);
+  if(currentIdx === CYCLING_IDX) stopCycle();
+  if(currentIdx === IMI_IDX) stopImiReveal();
+
+  currentIdx = idx;
+
+  requestAnimationFrame(()=>{
+    fadeInSection(to);
+    if(idx === CYCLING_IDX) startCycle();
+    applyCircle(ST[Math.min(idx, ST.length-1)]);
+    updateHashTicks(idx);
+    updateProgressLine(idx);
+    updateMobileUI(idx);
+  });
+}
+
+if(ioActive && 'IntersectionObserver' in window){
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      const idx = snapSections.indexOf(entry.target);
+      if(idx < 0) return;
+      handleSectionVisible(idx);
+    });
+  }, {threshold: 0.55});
+  snapSections.forEach(s => io.observe(s));
+}
+
+// Fallback scroll listener for older browsers / desktop-width mobile
+if(!ioActive || !('IntersectionObserver' in window)){
+  function onScrollEnd(){
+    const vc=window.innerHeight/2;
+    let best=currentIdx,bd=Infinity;
+    snapSections.forEach((el,i)=>{const r=el.getBoundingClientRect();const d=Math.abs((r.top+r.height/2)-vc);if(d<bd){bd=d;best=i;}});
+    if(best!==currentIdx){
+      const now=Date.now();if(now-lastNavTime<140)return;
+      lastNavTime=now;currentIdx=best;
+    }
+    fadeInSection(snapSections[currentIdx]);
+    if(currentIdx===CYCLING_IDX)startCycle();
+    applyCircle(ST[Math.min(currentIdx,ST.length-1)]);
+    updateHashTicks(currentIdx);
+    updateProgressLine(currentIdx);
+    updateMobileUI(currentIdx);
+  }
+  if('onscrollend' in window) window.addEventListener('scrollend',onScrollEnd);
+  else{ let st; window.addEventListener('scroll',()=>{clearTimeout(st);st=setTimeout(onScrollEnd,100);},{passive:true}); }
+}
+
+// Also keep a lightweight scroll fallback for desktop resizes
+window.addEventListener('resize',()=>{
+  ioActive = window.innerWidth <= 768;
+});
+
+/* Init */
+updateHashTicks(0);
+updateProgressLine(0);
+</script>
+</body>
+</html>
