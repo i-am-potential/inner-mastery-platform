@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="light">
+<title>Inner Mastery Index™ Full Assessment — I AM POTENTIAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:ital,wght@0,300;0,400;0,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  color-scheme:light only;
+  --bg:#f7f7f7;--ink:#212121;
+  --ink-50:rgba(33,33,33,.50);--ink-35:rgba(33,33,33,.35);
+  --ink-18:rgba(33,33,33,.18);--ink-10:rgba(33,33,33,.10);
+  --ink-06:rgba(33,33,33,.06);
+  --font-display:'Lora',Georgia,serif;
+  --font-mono:'DM Mono','Courier New',monospace;
+  --font-sans:'Inter Tight',system-ui,sans-serif;
+}
+@media(prefers-color-scheme:dark){:root{background:#f7f7f7!important;color:#212121!important}}
+html{background:#f7f7f7;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-weight:300;overflow-x:hidden;cursor:none}
+.cursor-dot{position:fixed;width:5px;height:5px;background:var(--ink);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%)}
+.cursor-ring{position:fixed;width:28px;height:28px;border:1px solid var(--ink-50);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+.cursor-ring.expand{width:42px;height:42px}
+.noise{position:fixed;inset:0;z-index:997;pointer-events:none;opacity:.032;overflow:hidden}
+.noise::after{content:'';position:absolute;inset:-50%;width:200%;height:200%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px 256px;animation:noiseAnim 1s steps(1,end) infinite}
+@keyframes noiseAnim{0%{transform:translate(0,0)}10%{transform:translate(-3%,-5%)}20%{transform:translate(-6%,-2%)}30%{transform:translate(3%,5%)}40%{transform:translate(6%,2%)}50%{transform:translate(-8%,-12%)}60%{transform:translate(-12%,-8%)}70%{transform:translate(8%,12%)}80%{transform:translate(12%,8%)}90%{transform:translate(15%,22%)}100%{transform:translate(-15%,-22%)}}
+.top-bar-wrap{position:fixed;top:0;left:0;right:0;height:1px;z-index:50}
+.top-bar-fill{height:100%;background:var(--ink);width:0%;transition:width .5s ease}
+.nav-logo{position:fixed;top:22px;left:105px;z-index:20;pointer-events:none;transform:translateX(-33.33%)}
+.nav-logo img{height:56px;width:auto;display:block}
+.nav-info{position:fixed;top:20px;right:24px;z-index:20;font-family:var(--font-mono);font-size:10px;line-height:1.65;color:var(--ink-50);text-align:right;pointer-events:none;transition:opacity .4s ease}
+.nav-step{position:fixed;top:20px;right:24px;z-index:20;font-family:var(--font-mono);font-size:10px;line-height:1.65;color:var(--ink-50);text-align:right;pointer-events:none;opacity:0;transition:opacity .4s ease}
+.nav-step.visible{opacity:1}
+.bottom-bar-wrap{position:fixed;bottom:22px;left:24px;z-index:20;pointer-events:none}
+.bb-single{font-family:var(--font-sans);font-weight:300;font-size:10px;letter-spacing:.12em;color:var(--ink-50);white-space:nowrap;transition:opacity .4s ease}
+.bb-double{display:flex;flex-direction:column;align-items:flex-start;font-family:var(--font-sans);font-weight:300;font-size:9px;letter-spacing:.1em;color:var(--ink-50);line-height:1.8;opacity:0;position:absolute;bottom:0;left:0;width:max-content;transition:opacity .4s ease .35s;pointer-events:none}
+.bottom-symbol{position:fixed;bottom:16px;right:22px;z-index:20;pointer-events:none}
+.bottom-symbol img{height:22px;width:auto;display:block}
+.screen{display:none;min-height:100vh;position:relative;z-index:5}
+.screen.active{display:block}
+#screen-capture{display:none;align-items:center;justify-content:center;padding:120px 24px 80px}
+#screen-capture.active{display:flex}
+.capture-center{max-width:480px;width:100%;text-align:center;animation:fadeUp .7s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.capture-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-35);margin-bottom:16px}
+.capture-title{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:clamp(24px,3.8vw,42px);line-height:1.3;letter-spacing:-.01em;color:var(--ink);margin-bottom:20px}
+.capture-title .title-italic{display:block;font-family:var(--font-mono);font-style:normal;font-weight:300;font-size:.42em;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-35);margin-top:14px}
+.capture-sub{font-family:var(--font-sans);font-size:15px;font-weight:300;line-height:1.8;color:var(--ink-50);max-width:380px;margin:0 auto 36px}
+.capture-meta{display:flex;align-items:center;justify-content:center;gap:20px;font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-35);margin-bottom:40px}
+.capture-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--ink-18)}
+.form-fields{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-input{width:100%;background:transparent;border:1px solid var(--ink-18);border-radius:8px;font-family:var(--font-sans);font-size:13px;font-weight:300;color:var(--ink);padding:14px 16px;transition:border-color .2s;outline:none;-webkit-appearance:none}
+.form-input::placeholder{color:var(--ink-35)}
+.form-input:focus{border-color:var(--ink-50)}
+.form-error{font-family:var(--font-mono);font-size:10px;color:var(--ink-50);min-height:18px;margin-bottom:4px;opacity:0;transition:opacity .2s;text-align:left;padding-left:2px}
+.form-error.show{opacity:1}
+.capture-btn{width:100%;border:1px solid var(--ink);border-radius:100px;background:transparent;color:var(--ink);font-family:var(--font-sans);font-size:14px;font-weight:400;letter-spacing:.025em;padding:18px 32px;cursor:none;transition:background .28s,color .28s;margin-top:8px}
+.capture-btn:hover{background:var(--ink);color:var(--bg)}
+.capture-btn em{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:1.08em}
+.btn-sans{font-family:var(--font-sans);font-weight:600;font-style:normal}
+.btn-lora{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:1.08em}
+.privacy-note{font-family:var(--font-sans);font-weight:300;font-size:11px;letter-spacing:.03em;color:var(--ink-50);margin-top:28px;line-height:1.75}
+.assess-outer{min-height:100vh;padding:100px 24px 80px}
+.assess-wrap{max-width:820px;margin:0 auto}
+.assess-intro{text-align:center;margin-bottom:52px}
+.part-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-35);margin-bottom:16px}
+.part-title{font-family:var(--font-sans);font-size:clamp(28px,4vw,44px);font-weight:500;letter-spacing:-.02em;line-height:1.18;color:var(--ink);margin-bottom:14px}
+.part-title em{font-family:var(--font-display);font-style:italic;font-weight:600}
+.part-sub{font-family:var(--font-sans);font-size:14px;font-weight:300;line-height:1.8;color:var(--ink-50);max-width:520px;margin:0 auto}
+.part-sub strong{font-weight:500;color:var(--ink)}
+.progress-strip{display:flex;align-items:center;gap:16px;padding:14px 18px;border:1px solid var(--ink-10);border-radius:10px;background:rgba(33,33,33,.02);margin-bottom:36px}
+.p-strip-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-35);flex-shrink:0}
+.p-strip-track{flex:1;height:1px;background:var(--ink-10);position:relative}
+.p-strip-fill{position:absolute;top:0;left:0;height:100%;background:var(--ink);transition:width .35s ease}
+.p-strip-count{font-family:var(--font-mono);font-size:10px;color:var(--ink-35);flex-shrink:0}
+.sd-group{margin-bottom:48px}
+.sd-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-35);display:block;padding:12px 0;border-top:1px solid var(--ink-10);margin-bottom:14px}
+.scale-header{display:grid;grid-template-columns:1fr repeat(6,72px);gap:6px;padding-bottom:10px;border-bottom:1px solid var(--ink-10)}
+.scale-lbl{font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-50);text-align:center;line-height:1.4}
+.q-row{display:grid;grid-template-columns:1fr repeat(6,72px);gap:6px;padding:18px 0;border-bottom:1px solid var(--ink-06);align-items:center;transition:background .15s}
+.q-row:hover{background:rgba(33,33,33,.02)}
+.q-row.answered{background:rgba(33,33,33,.025)}
+.q-text{font-family:var(--font-sans);font-size:14px;font-weight:400;line-height:1.7;color:var(--ink);padding-right:20px}
+.radio-cell input[type="radio"]{display:none}
+.mobile-scale-wrap{display:none}
+.radio-cell{display:flex;align-items:center;justify-content:center}
+.radio-cell label{width:40px;height:40px;border-radius:50%;border:1px solid var(--ink-18);display:flex;align-items:center;justify-content:center;cursor:none;transition:border-color .18s,background .18s,color .18s;font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--ink-50)}
+.radio-cell label:hover{border-color:var(--ink-50);color:var(--ink)}
+.radio-cell input[type="radio"]:checked+label{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.submit-zone{padding:44px 0 0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.validation-msg{font-family:var(--font-mono);font-size:10px;color:var(--ink-35);opacity:0;transition:opacity .25s;text-align:center;letter-spacing:.04em}
+.validation-msg.show{opacity:1}
+.submit-btn{border:1px solid var(--ink);border-radius:100px;background:transparent;color:var(--ink);font-family:var(--font-sans);font-size:14px;font-weight:400;letter-spacing:.025em;padding:18px 56px;cursor:none;transition:background .28s,color .28s}
+.submit-btn:hover{background:var(--ink);color:var(--bg)}
+.back-btn{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;background:transparent;border:1px solid var(--ink-18);color:var(--ink-35);padding:14px 28px;border-radius:100px;cursor:none;transition:border-color .2s,color .2s}
+.back-btn:hover{border-color:var(--ink-50);color:var(--ink-50)}
+.submit-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.privacy-sm{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;color:var(--ink-35)}
+#screen-generating{display:none;align-items:center;justify-content:center;min-height:100vh}
+#screen-generating.active{display:flex}
+.gen-wrap{max-width:440px;width:100%;text-align:center;padding:40px 24px;animation:fadeUp .6s ease both}
+.gen-rings{width:52px;height:52px;margin:0 auto 36px;position:relative}
+.gen-ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--ink-18);animation:ringPulse 2s ease-in-out infinite}
+.gen-ring:nth-child(2){animation-delay:.4s;border-color:var(--ink-35)}
+.gen-ring:nth-child(3){animation-delay:.8s;border-color:var(--ink-50);width:72px;height:72px;top:-10px;left:-10px}
+@keyframes ringPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+.gen-title{font-family:var(--font-sans);font-size:clamp(24px,3.5vw,36px);font-weight:500;letter-spacing:-.02em;line-height:1.2;color:var(--ink);margin-bottom:12px}
+.gen-title em{font-family:var(--font-display);font-style:italic;font-weight:600}
+.gen-sub{font-family:var(--font-sans);font-size:14px;font-weight:300;line-height:1.8;color:var(--ink-50);margin-bottom:36px}
+.gen-steps{display:flex;flex-direction:column;gap:8px;text-align:left}
+.gen-step{display:flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--ink-10);border-radius:8px;font-family:var(--font-sans);font-size:13px;font-weight:300;color:var(--ink-35);transition:all .4s}
+.gen-step.active{border-color:var(--ink-35);color:var(--ink)}
+.gen-step.done{border-color:var(--ink-10);color:var(--ink-35)}
+.step-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;border:1px solid var(--ink-35);transition:background .4s,border-color .4s}
+.gen-step.active .step-dot{background:var(--ink);border-color:var(--ink)}
+.gen-step.done .step-dot{background:var(--ink-18);border-color:var(--ink-18)}
+@media(max-width:768px){
+  body{cursor:auto}
+  .cursor-dot,.cursor-ring{display:none}
+  .capture-btn,.submit-btn,.back-btn{cursor:pointer}
+  .form-row{grid-template-columns:1fr}
+  .assess-outer{padding:90px 16px 80px}
+  .scale-header{display:none}
+  .q-row .radio-cell{display:none}
+  .q-row{display:flex;flex-direction:column;gap:0;padding:20px 0;border-bottom:1px solid var(--ink-10)}
+  .q-row:hover{background:transparent}
+  .q-text{font-size:15px;font-weight:400;color:var(--ink);padding-right:0;line-height:1.65;margin-bottom:16px}
+  .mobile-scale-wrap{display:block;width:100%}
+  .mobile-scale-labels{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:6px}
+  .mobile-scale-lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-50);text-align:center;line-height:1.3}
+  .mobile-radios{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+  .mobile-radio-cell{display:flex}
+  .mobile-radio-cell input[type="radio"]{display:none}
+  .mobile-radio-cell label{flex:1;min-height:40px;border-radius:50%;aspect-ratio:1;border:1px solid var(--ink-18);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .18s,background .18s,color .18s;font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--ink-50)}
+  .mobile-radio-cell input[type="radio"]:checked+label{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+  .nav-logo{position:fixed !important;top:16px !important;left:16px !important;transform:none !important;transition:none !important}
+  .nav-logo img{height:40px !important;width:auto}
+  .bottom-bar-wrap{transition:bottom .65s}
+  .bottom-bar-wrap.bar-scrolled{bottom:14px}
+  .bottom-bar-wrap.bar-scrolled .bb-single{opacity:0}
+  .bottom-bar-wrap.bar-scrolled .bb-double{opacity:1}
+  .p-strip-label,.p-strip-count{color:var(--ink-50)}
+  .sd-label{color:var(--ink-50);font-size:10px}
+  .part-title{font-size:clamp(26px,7vw,38px)}
+  .part-sub{font-size:15px}
+  .form-input{font-size:16px !important}
+  .p-strip-count{color:var(--ink-50)}
+  .sd-label{color:var(--ink-50);font-size:10px}
+}
+</style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="noise" aria-hidden="true"></div>
+<div class="top-bar-wrap"><div class="top-bar-fill" id="topBar"></div></div>
+
+<div class="nav-logo" id="navLogo" aria-label="I AM POTENTIAL">
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAACECAYAAADhnvK8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEvWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpBdHRyaWI9J2h0dHA6Ly9ucy5hdHRyaWJ1dGlvbi5jb20vYWRzLzEuMC8nPgogIDxBdHRyaWI6QWRzPgogICA8cmRmOlNlcT4KICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0nUmVzb3VyY2UnPgogICAgIDxBdHRyaWI6Q3JlYXRlZD4yMDI1LTEyLTIzPC9BdHRyaWI6Q3JlYXRlZD4KICAgICA8QXR0cmliOkV4dElkPjFhZjgxNTBkLWU3MGEtNDZlYy05YzY5LTYwNTdiNmViYzgyZjwvQXR0cmliOkV4dElkPgogICAgIDxBdHRyaWI6RmJJZD41MjUyNjU5MTQxNzk1ODA8L0F0dHJpYjpGYklkPgogICAgIDxBdHRyaWI6VG91Y2hUeXBlPjI8L0F0dHJpYjpUb3VjaFR5cGU+CiAgICA8L3JkZjpsaT4KICAgPC9yZGY6U2VxPgogIDwvQXR0cmliOkFkcz4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6ZGM9J2h0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvJz4KICA8ZGM6dGl0bGU+CiAgIDxyZGY6QWx0PgogICAgPHJkZjpsaSB4bWw6bGFuZz0neC1kZWZhdWx0Jz5Hb29nbGUgTG9nbyB8IEJMQUNLIC0gMTwvcmRmOmxpPgogICA8L3JkZjpBbHQ+CiAgPC9kYzp0aXRsZT4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3Jp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" alt="i am potential"/>
+</div>
+<div class="nav-info" id="navInfo">2033/.01<br>8.944</div>
+<div class="nav-step" id="navStep"></div>
+<div class="bottom-bar-wrap" id="bottomBarWrap">
+  <div class="bb-single">know yourself &middot; master your potential</div>
+  <div class="bb-double"><span>know yourself</span><span>master your potential</span></div>
+</div>
+<div class="bottom-symbol" aria-hidden="true">
+  <img src="data:image/png;base64,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CIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACIiACEQjEKJFUiARSExghf74J2/b/lLpC+5V8A287W/f4ZZMBOwILND1Bk6xDv1zuxR+CZeJgAsCG2Rxi5AvhU9ha8V2UdJ5JsFVmVuHS2He+3kzT5watSUBrqQH+L3ibXt+Zzk49T0vAlyZY2wx2sRcX5eo56Urk9FSzNzr1qIb+7g2GaU6nQ2BbUIx15OF2xuZCEQnQGHVIkt5rKKPRAFFAAQorJRCbvZVqgIiEJNAQLCmwFKfVzEHo1giYLF3vpw0QWXoR+CHfs1m3WrlYPQecnCAoTsFCfo6owVuh+tNktz9mqSXCXQiQV8vIn+64cG85OGBxdUcJOireFyszswwXE9Td2sCEnRN4uNj+PiyrnolIEF7rYzyuomABH0d2+n6bd31RkCCvl6R/fXbye5qYvVELUFfB3W8fjvZXS8TK9mAb+1Igr5O7ojbHlbHp+tp6m5NQIKuSbQfv7XfSnbHQw7JBquOxiVQIPzl/61I+fkw7vAUfY4EKKqUIm72tZ4jcI15XAIrI0FzIi3GHZqiz5VAhYE3V84U55xIMhEYhUBA1BS/8V1PlN0oo1BQEWgQWOK8FtyYR/52ubYaDfA6HY9AidAS83h8FdmAAFfqMbYfD4irldmgoOryT+FVABFjtebkWAuqCHggUCCJe4S9w/MBLhMBVwS4DdnCD/CuVZsTgCuytheAENM+xwymWG8EKFQK/NJOuLC/vKjPIiACIiACIiACIiACIiACImBF4P9XUVMCeKL4kgAAAABJRU5ErkJggg==" alt=""/>
+</div>
+
+<!-- SCREEN 1: CAPTURE -->
+<div class="screen active" id="screen-capture">
+  <div class="capture-center">
+    <div class="capture-eyebrow">Inner Mastery Index™</div>
+    <h1 class="capture-title">
+      "Awareness precedes choice,<br>choice precedes transformation."
+    </h1>
+    <p class="capture-sub">Complete the assessment based on the last two weeks.</p>
+    <div class="capture-meta">
+      <span>60 questions</span>
+      <span class="capture-meta-dot"></span>
+      <span>~12 minutes</span>
+      <span class="capture-meta-dot"></span>
+      <span>Full assessment</span>
+    </div>
+    <div class="form-fields">
+      <div class="form-row">
+        <input class="form-input" type="text" id="fFirstName" placeholder="First name" autocomplete="given-name">
+        <input class="form-input" type="text" id="fLastName" placeholder="Last name" autocomplete="family-name">
+      </div>
+      <input class="form-input" type="email" id="fEmail" placeholder="Email address" autocomplete="email">
+      <input class="form-input" type="text" id="fClientToken" placeholder="Your client token" autocomplete="off">
+    </div>
+    <p class="form-error" id="captureError"></p>
+    <button class="capture-btn" onclick="startAssessment()">Take the <span class="btn-sans">Inner Mastery</span> <em class="btn-lora">Index&trade;</em></button>
+    <p class="privacy-note">Your results are saved privately and linked to your coaching profile.</p>
+  </div>
+</div>
+
+<!-- SCREEN 2: PART 1 (Flexibility 1.1–1.3, Q0–14) -->
+<div class="screen" id="screen-part1">
+  <div class="assess-outer"><div class="assess-wrap">
+    <div class="assess-intro">
+      <div class="part-badge">Part 01 of 03 &nbsp;&middot;&nbsp; Inner Flexibility</div>
+      <h2 class="part-title">Acceptance, Awareness<br><em>&amp; Perspective</em></h2>
+      <p class="part-sub">With the last two weeks in mind, answer based on how things have <strong>actually been</strong> — not how you'd like them to be.</p>
+    </div>
+    <div class="progress-strip"><span class="p-strip-label">Progress</span><div class="p-strip-track"><div class="p-strip-fill" id="p1Bar" style="width:0%"></div></div><span class="p-strip-count" id="p1Count">0 / 15</span></div>
+    <div id="part1Questions"></div>
+    <div class="submit-zone">
+      <span class="validation-msg" id="val1">Please answer all 15 questions to continue.</span>
+      <button class="submit-btn" onclick="goTo('part2',1,15,1)">Continue to Part 02</button>
+      <p class="privacy-sm">Your answers are saved as you go.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- SCREEN 3: PART 2 (Flexibility 1.4–1.6, Q15–29) -->
+<div class="screen" id="screen-part2">
+  <div class="assess-outer"><div class="assess-wrap">
+    <div class="assess-intro">
+      <div class="part-badge">Part 02 of 03 &nbsp;&middot;&nbsp; Inner Flexibility</div>
+      <h2 class="part-title">Defusion, Values<br><em>&amp; Committed Action</em></h2>
+      <p class="part-sub">Continue answering honestly based on the last two weeks.</p>
+    </div>
+    <div class="progress-strip"><span class="p-strip-label">Progress</span><div class="p-strip-track"><div class="p-strip-fill" id="p2Bar" style="width:0%"></div></div><span class="p-strip-count" id="p2Count">0 / 15</span></div>
+    <div id="part2Questions"></div>
+    <div class="submit-zone">
+      <span class="validation-msg" id="val2">Please answer all 15 questions to continue.</span>
+      <div class="submit-btns">
+        <button class="back-btn" onclick="goTo('part1',0,15,0)">← Back</button>
+        <button class="submit-btn" onclick="goTo('part3',2,15,2)">Continue to Part 03</button>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SCREEN 4: PART 3 (Rigidity 2.1–2.6, Q30–59) -->
+<div class="screen" id="screen-part3">
+  <div class="assess-outer"><div class="assess-wrap">
+    <div class="assess-intro">
+      <div class="part-badge">Part 03 of 03 &nbsp;&middot;&nbsp; Inner Rigidity</div>
+      <h2 class="part-title">Domains of<br><em>Inner Rigidity</em></h2>
+      <p class="part-sub">These questions explore patterns that can limit or constrain your potential. Answer honestly.</p>
+    </div>
+    <div class="progress-strip"><span class="p-strip-label">Progress</span><div class="p-strip-track"><div class="p-strip-fill" id="p3Bar" style="width:0%"></div></div><span class="p-strip-count" id="p3Count">0 / 30</span></div>
+    <div id="part3Questions"></div>
+    <div class="submit-zone">
+      <span class="validation-msg" id="val3">Please answer all 30 questions to see your results.</span>
+      <div class="submit-btns">
+        <button class="back-btn" onclick="goTo('part2',1,15,1)">← Back</button>
+        <button class="submit-btn" onclick="submitAssessment()">See My Results</button>
+      </div>
+      <p class="privacy-sm">Your results are generated immediately.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- SCREEN 5: GENERATING -->
+<div class="screen" id="screen-generating">
+  <div class="gen-wrap">
+    <div class="gen-rings"><div class="gen-ring"></div><div class="gen-ring"></div><div class="gen-ring"></div></div>
+    <h2 class="gen-title">Generating your<br><em>full profile.</em></h2>
+    <p class="gen-sub">Analyzing your responses across all 6 Disciplines of Inner Mastery™…</p>
+    <div class="gen-steps">
+      <div class="gen-step" id="gs1"><div class="step-dot"></div>Scoring all 12 sub-domains</div>
+      <div class="gen-step" id="gs2"><div class="step-dot"></div>Computing composite profiles</div>
+      <div class="gen-step" id="gs3"><div class="step-dot"></div>Identifying growth opportunities</div>
+      <div class="gen-step" id="gs4"><div class="step-dot"></div>Updating your coaching dashboard</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* CURSOR */
+const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
+let cx=window.innerWidth/2,cy=window.innerHeight/2,rx=cx,ry=cy;
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;dot.style.left=cx+'px';dot.style.top=cy+'px';});
+function addHover(el){el.addEventListener('mouseenter',()=>ring.classList.add('expand'));el.addEventListener('mouseleave',()=>ring.classList.remove('expand'));}
+document.querySelectorAll('a,button').forEach(addHover);
+(function loop(){rx+=(cx-rx)*.11;ry+=(cy-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+/* MOBILE SCROLL NAV */
+window.addEventListener('scroll',()=>{
+  if(window.innerWidth>768)return;
+  const y=window.scrollY,logo=document.getElementById('navLogo'),bar=document.getElementById('bottomBarWrap');
+  if(y>40){logo.classList.add('nav-scrolled');bar&&bar.classList.add('bar-scrolled');}
+  else{logo.classList.remove('nav-scrolled');bar&&bar.classList.remove('bar-scrolled');}
+},{passive:true});
+
+/* AIRTABLE — writes to IMI Submissions table */
+const AT='patXZU4feobmFpJSd.0bed8f94c262de32c7e4e0a366ed1a657c692e32ddd58b255bf40ca9e38528ef';
+const BASE='applU7yoGCDtN7RmB';
+const TABLE='tblnGz85y9bKG6ao3';
+
+/* ALL 60 QUESTIONS — from IMI Reference Manual, exact wording */
+const SCALE=['Never true','Rarely true','Occasionally true','Often true','Very often true','Always true'];
+
+/* PART 1: Flexibility 1.1–1.3 (Q0–Q14) */
+const PART1=[
+  {sd:'Sub-domain 1.1 — Acceptance',qs:[
+    'I was receptive to observing unpleasant thoughts and feelings without interfering with them.',
+    'I tried to make peace with my negative thoughts and feelings rather than resisting them.',
+    'I made room to fully experience negative thoughts and emotions, breathing them in rather than pushing them away.',
+    'When I had an upsetting thought or emotion, I tried to give it space rather than ignoring it.',
+    'I opened myself to all of my feelings, the good and the bad.'
+  ]},
+  {sd:'Sub-domain 1.2 — Present-Moment Awareness',qs:[
+    'I was attentive and aware of my emotions.',
+    'I was in tune with my thoughts and feelings from moment to moment.',
+    'I paid close attention to what I was thinking and feeling.',
+    'I was in touch with the ebb and flow of my thoughts and feelings.',
+    'I strived to remain mindful and aware of my own thoughts and emotions.'
+  ]},
+  {sd:'Sub-domain 1.3 — Self-as-Context',qs:[
+    'Even when I felt hurt or upset, I tried to maintain a broader perspective.',
+    'I carried myself through tough moments by seeing my life from a larger viewpoint.',
+    'I tried to keep perspective even when life knocked me down.',
+    'When I was scared or afraid, I still tried to see the larger picture.',
+    'When something painful happened, I tried to take a balanced view of the situation.'
+  ]}
+];
+
+/* PART 2: Flexibility 1.4–1.6 (Q15–Q29) */
+const PART2=[
+  {sd:'Sub-domain 1.4 — Defusion',qs:[
+    'I was able to let negative feelings come and go without getting caught up in them.',
+    'When I was upset, I was able to let those negative feelings pass through me without clinging to them.',
+    'When I was scared or afraid, I was able to gently experience those feelings, allowing them to pass.',
+    'I was able to step back and notice negative thoughts and feelings without reacting to them.',
+    'In tough situations, I was able to notice my thoughts and feelings without getting overwhelmed by them.'
+  ]},
+  {sd:'Sub-domain 1.5 — Values',qs:[
+    'I was very in-touch with what is important to me and my life.',
+    'I stuck to my deeper priorities in life.',
+    'I tried to connect with what is truly important to me on a daily basis.',
+    'Even when it meant making tough choices, I still tried to prioritize the things that were important to me.',
+    'My deeper values consistently gave direction to my life.'
+  ]},
+  {sd:'Sub-domain 1.6 — Committed Action',qs:[
+    "Even when I stumbled in my efforts, I didn't quit working toward what is important.",
+    'Even when times got tough, I was still able to take steps toward what I value in life.',
+    'Even when life got stressful and hectic, I still worked toward things that were important to me.',
+    "I didn't let setbacks slow me down in taking action toward what I really want in life.",
+    "I didn't let my own fears and doubts get in the way of taking action toward my goals."
+  ]}
+];
+
+/* PART 3: Rigidity 2.1–2.6 (Q30–Q59) */
+const PART3=[
+  {sd:'Sub-domain 2.1 — Experiential Avoidance',qs:[
+    'When I had a bad memory, I tried to distract myself to make it go away.',
+    'I tried to distract myself when I felt unpleasant emotions.',
+    'When unpleasant memories came to me, I tried to put them out of my mind.',
+    'When something upsetting came up, I tried very hard to stop thinking about it.',
+    "If there was something I didn't want to think about, I would try many things to get it out of my mind."
+  ]},
+  {sd:'Sub-domain 2.2 — Lack of Present-Moment Contact',qs:[
+    'I did most things on "automatic" with little awareness of what I was doing.',
+    'I did most things mindlessly without paying much attention.',
+    'I went through most days on auto-pilot without paying much attention to what I was thinking or feeling.',
+    'I floated through most days without paying much attention.',
+    'Most of the time I was just going through the motions without paying much attention.'
+  ]},
+  {sd:'Sub-domain 2.3 — Self-as-Content',qs:[
+    "I thought some of my emotions were bad or inappropriate and I shouldn't feel them.",
+    'I criticized myself for having irrational or inappropriate emotions.',
+    'I believed some of my thoughts are abnormal or bad and I should not think that way.',
+    "I told myself that I shouldn't be feeling the way I'm feeling.",
+    'I told myself I should not be thinking the way I was thinking.'
+  ]},
+  {sd:'Sub-domain 2.4 — Fusion',qs:[
+    'Negative thoughts and feelings tended to stick with me for a long time.',
+    'Distressing thoughts tended to spin around in my mind like a broken record.',
+    'It was very easy to get trapped into unwanted thoughts and feelings.',
+    'My thoughts and feelings often overwhelmed me.',
+    'I found it hard to get distance from distressing thoughts and feelings.'
+  ]},
+  {sd:'Sub-domain 2.5 — Lack of Values Contact',qs:[
+    'My priorities and values often fell by the wayside in my day to day life.',
+    'When life got hectic, I often lost touch with the things I value.',
+    'The things that I value the most often fell off my priority list completely.',
+    "I didn't usually have time to focus on the things that are really important to me.",
+    'When times got tough, it was easy to forget about what I truly value.'
+  ]},
+  {sd:'Sub-domain 2.6 — Inaction',qs:[
+    'Negative feelings often trapped me in inaction.',
+    'Negative feelings easily stalled out my plans.',
+    'Getting upset left me stuck and inactive.',
+    "Negative experiences derailed me from what's really important.",
+    'Unpleasant thoughts and feelings easily overwhelmed my efforts to deepen my life.'
+  ]}
+];
+
+/* STATE */
+const answers={};
+let leadData={};
+
+/* RENDER */
+function renderPart(part,containerId,startIdx){
+  const container=document.getElementById(containerId);
+  let html='',qIdx=startIdx;
+  const SCALE_SHORT=['Never','Rarely','Occasionally','Often','Very Often','Always'];
+  part.forEach(sd=>{
+    html+=`<div class="sd-group"><span class="sd-label">${sd.sd}</span>
+    <div class="scale-header"><div></div>${SCALE.map(s=>`<div class="scale-lbl">${s}</div>`).join('')}</div>`;
+    sd.qs.forEach(q=>{
+      const key=`q${qIdx}`,mk=`m${qIdx}`;
+      const desktopCells=[1,2,3,4,5,6].map(v=>`
+        <div class="radio-cell">
+          <input type="radio" name="${key}" id="${key}_${v}" value="${v}" onchange="record('${key}',${v})">
+          <label for="${key}_${v}">${v}</label>
+        </div>`).join('');
+      const mobileLabels=SCALE_SHORT.map(s=>`<div class="mobile-scale-lbl">${s}</div>`).join('');
+      const mobileCells=[1,2,3,4,5,6].map(v=>`
+        <div class="mobile-radio-cell">
+          <input type="radio" name="${mk}" id="${mk}_${v}" value="${v}" onchange="record('${key}',${v})">
+          <label for="${mk}_${v}">${v}</label>
+        </div>`).join('');
+      html+=`<div class="q-row" id="row_${key}">
+        <div class="q-text">${q}</div>
+        ${desktopCells}
+        <div class="mobile-scale-wrap">
+          <div class="mobile-scale-labels">${mobileLabels}</div>
+          <div class="mobile-radios">${mobileCells}</div>
+        </div>
+      </div>`;
+      qIdx++;
+    });
+    html+='</div>';
+  });
+  container.innerHTML=html;
+  container.querySelectorAll('label').forEach(addHover);
+}
+renderPart(PART1,'part1Questions',0);
+renderPart(PART2,'part2Questions',15);
+renderPart(PART3,'part3Questions',30);
+
+/* TRACKING */
+function record(key,val){
+  answers[key]=val;
+  document.getElementById('row_'+key)?.classList.add('answered');
+  const num=parseInt(key.slice(1));
+  if(num<15)updateProgress(1);
+  else if(num<30)updateProgress(2);
+  else updateProgress(3);
+  const vid=num<15?'val1':num<30?'val2':'val3';
+  document.getElementById(vid).classList.remove('show');
+}
+
+function updateProgress(part){
+  if(part===1){
+    const done=Object.keys(answers).filter(k=>parseInt(k.slice(1))<15).length;
+    document.getElementById('p1Bar').style.width=(done/15*100)+'%';
+    document.getElementById('p1Count').textContent=done+' / 15';
+    document.getElementById('topBar').style.width=(5+done/15*25)+'%';
+  }else if(part===2){
+    const done=Object.keys(answers).filter(k=>{const n=parseInt(k.slice(1));return n>=15&&n<30;}).length;
+    document.getElementById('p2Bar').style.width=(done/15*100)+'%';
+    document.getElementById('p2Count').textContent=done+' / 15';
+    document.getElementById('topBar').style.width=(30+done/15*25)+'%';
+  }else{
+    const done=Object.keys(answers).filter(k=>parseInt(k.slice(1))>=30).length;
+    document.getElementById('p3Bar').style.width=(done/30*100)+'%';
+    document.getElementById('p3Count').textContent=done+' / 30';
+    document.getElementById('topBar').style.width=(55+done/30*40)+'%';
+  }
+}
+
+/* SCREEN SWITCH */
+function showScreen(id){
+  document.body.style.overflow='hidden';
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='none';});
+  const target=document.getElementById('screen-'+id);
+  target.classList.add('active');
+  target.style.display=(id==='capture'||id==='generating')?'flex':'block';
+  window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;
+  requestAnimationFrame(()=>{document.body.style.overflow='';});
+}
+document.querySelectorAll('.screen:not(.active)').forEach(s=>s.style.display='none');
+
+function setNavAssessment(label){
+  document.getElementById('navInfo').style.opacity='0';
+  const step=document.getElementById('navStep');
+  step.textContent=label;step.classList.add('visible');
+}
+function setNavCapture(){
+  document.getElementById('navInfo').style.opacity='1';
+  document.getElementById('navStep').textContent='';
+  document.getElementById('navStep').classList.remove('visible');
+}
+
+/* VALIDATE + START */
+function startAssessment(){
+  const fn=document.getElementById('fFirstName').value.trim();
+  const ln=document.getElementById('fLastName').value.trim();
+  const em=document.getElementById('fEmail').value.trim();
+  const tk=document.getElementById('fClientToken').value.trim();
+  const err=document.getElementById('captureError');
+  if(!fn){err.textContent='Please enter your first name.';err.classList.add('show');return;}
+  if(!ln){err.textContent='Please enter your last name.';err.classList.add('show');return;}
+  if(!em||!/^[^@]+@[^@]+\.[^@]+$/.test(em)){err.textContent='Please enter a valid email address.';err.classList.add('show');return;}
+  if(!tk){err.textContent='Please enter your client token — check your welcome email.';err.classList.add('show');return;}
+  err.classList.remove('show');
+  leadData={firstName:fn,lastName:ln,email:em,clientToken:tk};
+  document.getElementById('topBar').style.width='5%';
+  setNavAssessment('Part 01 of 03');
+  showScreen('part1');
+}
+
+/* NAVIGATION BETWEEN PARTS */
+function goTo(targetPart,fromPart,count,valIdx){
+  const start=fromPart===0?0:fromPart===1?15:30;
+  const missing=Array.from({length:count},(_,i)=>!answers['q'+(start+i)]).filter(Boolean).length;
+  if(missing>0){
+    document.getElementById('val'+(valIdx+1)).classList.add('show');
+    for(let i=start;i<start+count;i++){
+      if(!answers['q'+i]){document.getElementById('row_q'+i)?.scrollIntoView({behavior:'smooth',block:'center'});break;}
+    }
+    return;
+  }
+  const labels=['Part 01 of 03','Part 02 of 03','Part 03 of 03'];
+  setNavAssessment(labels[fromPart===0?1:fromPart===1?2:0]||'Part 01 of 03');
+  if(targetPart==='part1') setNavAssessment('Part 01 of 03');
+  if(targetPart==='part2') setNavAssessment('Part 02 of 03');
+  if(targetPart==='part3') setNavAssessment('Part 03 of 03');
+  showScreen(targetPart);
+}
+
+/* SCORE HELPERS */
+const a=i=>+(answers['q'+i])||0;
+const avg=(...indices)=>parseFloat((indices.reduce((s,i)=>s+a(i),0)/indices.length).toFixed(2));
+
+/* SUBMIT */
+async function submitAssessment(){
+  // Validate part 3 (Q30–Q59)
+  const missing=Array.from({length:30},(_,i)=>!answers['q'+(30+i)]).filter(Boolean).length;
+  if(missing>0){
+    document.getElementById('val3').classList.add('show');
+    for(let i=30;i<60;i++){if(!answers['q'+i]){document.getElementById('row_q'+i)?.scrollIntoView({behavior:'smooth',block:'center'});break;}}
+    return;
+  }
+  showScreen('generating');
+  setNavCapture();
+  document.getElementById('topBar').style.width='80%';
+  const steps=['gs1','gs2','gs3','gs4'];
+  steps.forEach((id,i)=>setTimeout(()=>{
+    if(i>0)document.getElementById(steps[i-1]).className='gen-step done';
+    document.getElementById(id).className='gen-step active';
+  },i*800));
+
+  /* COMPUTE SUB-DOMAIN AVERAGES (5 items each) */
+  // Flexibility
+  const acc  = avg(0,1,2,3,4);
+  const pres = avg(5,6,7,8,9);
+  const sac  = avg(10,11,12,13,14);
+  const def  = avg(15,16,17,18,19);
+  const val  = avg(20,21,22,23,24);
+  const act  = avg(25,26,27,28,29);
+  // Rigidity
+  const ea   = avg(30,31,32,33,34);
+  const lp   = avg(35,36,37,38,39);
+  const sc   = avg(40,41,42,43,44);
+  const fus  = avg(45,46,47,48,49);
+  const lvc  = avg(50,51,52,53,54);
+  const ina  = avg(55,56,57,58,59);
+
+  /* GLOBAL COMPOSITES */
+  const gFlex  = parseFloat(((acc+pres+sac+def+val+act)/6).toFixed(2));
+  const gRigid = parseFloat(((ea+lp+sc+fus+lvc+ina)/6).toFixed(2));
+
+  /* BUILD AIRTABLE FIELDS using confirmed field names */
+  const fields={
+    'Timestamp': new Date().toISOString(),
+    'First Name': leadData.firstName,
+    'Last Name':  leadData.lastName,
+    'Email':      leadData.email,
+    'Client Token': leadData.clientToken,
+    'Assessment Type': 'Full Form',
+    'Dashboard Unlocked': false,
+    // Global composites
+    'Global Flexibility': gFlex,
+    'Global Rigidity':    gRigid,
+    // Flexibility sub-domains
+    'Acceptance':         acc,
+    'Presence':           pres,
+    'Self as context':    sac,
+    'Defusion':           def,
+    'Values':             val,
+    'Committed Action':   act,
+    // Rigidity sub-domains
+    'Experiential Avoidance':   ea,
+    'Lack of Presence':         lp,
+    'Self as Content':          sc,
+    'Fusion':                   fus,
+    'Lack of Values Contact':   lvc,
+    'Inaction':                 ina,
+    // All 60 individual item responses
+    '1.1a Observing without interfering': a(0),
+    '1.1b Making peace with negative feelings': a(1),
+    '1.1c Making room for negative emotions': a(2),
+    '1.1d Giving space to upsetting thoughts': a(3),
+    '1.1e Opening to all feelings': a(4),
+    '1.2a Attentive and aware of emotions': a(5),
+    '1.2b In tune moment to moment': a(6),
+    '1.2c Paying close attention to thoughts and feelings': a(7),
+    '1.2d In touch with ebb and flow': a(8),
+    '1.2e Striving to remain mindful': a(9),
+    '1.3a Maintaining broader perspective': a(10),
+    '1.3b Seeing life from larger viewpoint': a(11),
+    '1.3c Keeping perspective when knocked down': a(12),
+    '1.3d Seeing larger picture when afraid': a(13),
+    '1.3e Taking balanced view of painful situations': a(14),
+    '1.4a Letting negative feelings come and go': a(15),
+    '1.4b Letting feelings pass without clinging': a(16),
+    '1.4c Gently experiencing fear, allowing it to pass': a(17),
+    '1.4d Stepping back and noticing without reacting': a(18),
+    '1.4e Noticing thoughts without feeling overwhelmed': a(19),
+    '1.5a In touch with what is important': a(20),
+    '1.5b Sticking to deeper priorities': a(21),
+    '1.5c Connecting with what is truly important daily': a(22),
+    '1.5d Prioritizing important things despite tough choices': a(23),
+    '1.5e Values consistently giving direction': a(24),
+    '1.6a Not quitting when stumbling': a(25),
+    '1.6b Taking steps toward values when tough': a(26),
+    '1.6c Working toward important things when hectic': a(27),
+    '1.6d Not letting setbacks slow action': a(28),
+    '1.6e Not letting fears block action toward goals': a(29),
+    '2.1a Distracting from bad memories': a(30),
+    '2.1b Distracting from unpleasant emotions': a(31),
+    '2.1c Putting unpleasant memories out of mind': a(32),
+    '2.1d Trying hard to stop thinking about upsetting things': a(33),
+    '2.1e Trying many things to avoid unwanted thoughts': a(34),
+    '2.2a Doing things on automatic': a(35),
+    '2.2b Doing things mindlessly': a(36),
+    '2.2c Going through days on auto-pilot': a(37),
+    '2.2d Floating through days without attention': a(38),
+    '2.2e Just going through the motions': a(39),
+    '2.3a Judging emotions as bad or inappropriate': a(40),
+    '2.3b Criticizing self for irrational emotions': a(41),
+    '2.3c Believing thoughts are abnormal or bad': a(42),
+    '2.3d Telling self not to feel the way feeling': a(43),
+    '2.3e Telling self not to think the way thinking': a(44),
+    '2.4a Negative thoughts sticking for a long time': a(45),
+    '2.4b Distressing thoughts spinning like broken record': a(46),
+    '2.4c Easy to get trapped in unwanted thoughts': a(47),
+    '2.4d Thoughts and feelings often overwhelming': a(48),
+    '2.4e Hard to get distance from distressing thoughts': a(49),
+    '2.5a Priorities falling by wayside': a(50),
+    '2.5b Losing touch with values when hectic': a(51),
+    '2.5c Values falling off priority list completely': a(52),
+    '2.5d No time to focus on truly important things': a(53),
+    '2.5e Easy to forget true values when tough': a(54),
+    '2.6a Negative feelings trapping in inaction': a(55),
+    '2.6b Negative feelings stalling plans': a(56),
+    '2.6c Getting upset leaving stuck and inactive': a(57),
+    '2.6d Negative experiences derailing from important': a(58),
+    '2.6e Unpleasant thoughts overwhelming efforts': a(59)
+  };
+
+  try{
+    await fetch(`https://api.airtable.com/v0/${BASE}/${TABLE}`,{
+      method:'POST',
+      headers:{'Authorization':`Bearer ${AT}`,'Content-Type':'application/json'},
+      body:JSON.stringify({records:[{fields}]})
+    });
+  }catch(e){console.warn('Airtable write failed:',e);}
+
+  setTimeout(()=>{document.getElementById('gs4').className='gen-step done';document.getElementById('topBar').style.width='100%';},3200);
+  setTimeout(()=>{window.location.href=`client-dashboard.html?token=${encodeURIComponent(leadData.clientToken)}`;},3800);
+}
+</script>
+</body>
+</html>
